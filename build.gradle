@@ -1,0 +1,44 @@
+ext {
+	lombokVersion = '1.16.12'
+	spockVersion = '1.0-groovy-2.4'
+	springBootVersion = '1.5.2.RELEASE'
+	querydslVersion = '4.1.4'
+}
+
+subprojects {
+	apply plugin: 'java'
+	apply plugin: 'eclipse'
+	apply plugin: 'groovy'
+	apply plugin: 'idea'
+
+	sourceCompatibility = 1.8
+	targetCompatibility = 1.8
+
+	project.group = 'copycat'
+
+	configurations {
+		providedCompile
+
+		all*.exclude group: 'commons-logging', module: 'commons-logging'
+		all*.exclude group: 'log4j', module: 'log4j'
+		all*.exclude group: 'org.slf4j', module: 'slf4j-log4j12'
+		all*.exclude group: 'org.slf4j', module: 'slf4j-jcl'
+		all*.exclude group: 'org.slf4j', module: 'slf4j-jdk14'
+	}
+
+	repositories {
+		mavenCentral()
+	}
+
+	dependencies {
+		testCompile("junit:junit:4.12")
+		testCompile("org.mockito:mockito-all:1.10.19")
+	}
+
+	sourceSets {
+		main.compileClasspath += configurations.providedCompile
+		test.compileClasspath += configurations.providedCompile
+		test.runtimeClasspath += configurations.providedCompile
+	}
+
+}
