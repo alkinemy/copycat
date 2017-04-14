@@ -32,7 +32,13 @@ dependencies {
 	compile("com.querydsl:querydsl-jpa:${querydslVersion}")
 	compile("com.querydsl:querydsl-apt:${querydslVersion}:jpa")
 
-	testCompile("org.spockframework:spock-core:${spockVersion}")
+
+    compile 'io.projectreactor:reactor-core:3.0.6.RELEASE'
+
+    compile 'com.turn:ttorrent:1.5' //torrent
+    compile 'com.rometools:rome:1.7.2' //rss
+
+    testCompile("org.spockframework:spock-core:${spockVersion}")
 	testCompile("org.spockframework:spock-spring:${spockVersion}")
 	testCompile("org.springframework.boot:spring-boot-starter-test:${springBootVersion}")
 }
