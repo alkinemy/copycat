@@ -1,14 +1,15 @@
-package al.copycat.domain.download.torrent.model;
+package al.copycat.domain.download.direct.model;
 
 import al.copycat.domain.download.common.model.Source;
 import lombok.Getter;
 
 import java.io.File;
+import java.net.URL;
 
 @Getter
-public class FileTorrent implements Source {
+public class UrlSource implements Source {
 
-	private File torrentFile;
+	private URL url;
 
 	private File destination;
 
