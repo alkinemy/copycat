@@ -1,1 +1,0 @@
-package al.copycat.domain.source.rss;

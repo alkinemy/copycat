@@ -1,0 +1,1 @@
+package al.copycat.domain.origin.manual;
