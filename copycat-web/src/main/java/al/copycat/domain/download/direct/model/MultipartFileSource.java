@@ -2,14 +2,14 @@ package al.copycat.domain.download.direct.model;
 
 import al.copycat.domain.download.common.model.Source;
 import lombok.Getter;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.net.URL;
 
 @Getter
-public class UrlSource implements Source {
+public class MultipartFileSource implements Source{
 
-	private URL source;
+	private MultipartFile source;
 
 	private File destination;
 

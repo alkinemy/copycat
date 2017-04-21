@@ -32,8 +32,10 @@ dependencies {
 	compile("com.querydsl:querydsl-jpa:${querydslVersion}")
 	compile("com.querydsl:querydsl-apt:${querydslVersion}:jpa")
 
+	compile 'org.apache.commons:commons-compress:1.13'
+	compile 'org.apache.commons:commons-lang3:3.5'
 
-    compile 'io.projectreactor:reactor-core:3.0.6.RELEASE'
+	compile 'io.projectreactor:reactor-core:3.0.6.RELEASE'
 
 	compile 'com.turn:ttorrent-core:1.5' //torrent
     compile 'com.rometools:rome:1.7.2' //rss

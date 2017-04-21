@@ -8,7 +8,7 @@ import java.io.File;
 @Getter
 public class FileTorrentSource implements Source {
 
-	private File torrentFile;
+	private File source;
 
 	private File destination;
 

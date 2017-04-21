@@ -17,7 +17,7 @@ public class FileTorrentDownloader implements Downloader<FileTorrentSource> {
 	@Override
 	public void startDownload(FileTorrentSource torrent) {
 		try {
-			Client client = new Client(InetAddress.getLocalHost(), SharedTorrent.fromFile(torrent.getTorrentFile(), torrent.getDestination()));
+			Client client = new Client(InetAddress.getLocalHost(), SharedTorrent.fromFile(torrent.getSource(), torrent.getDestination()));
 			client.setMaxDownloadRate(1024.0);
 			client.setMaxUploadRate(10.0);
 
@@ -25,7 +25,7 @@ public class FileTorrentDownloader implements Downloader<FileTorrentSource> {
 
 			client.download();
 		} catch (Exception e) {
-			throw new DownloadException("Fail to start downloading torrent", e);
+			throw new DownloadException("Fail to start downloading torrent: " + torrent.getSource().getAbsolutePath(), e);
 		}
 	}
 
