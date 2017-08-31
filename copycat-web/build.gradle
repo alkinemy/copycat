@@ -27,6 +27,7 @@ dependencies {
 	compile("org.springframework.boot:spring-boot-starter-actuator:${springBootVersion}")
 
 	compile("org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}")
+    compile('mysql:mysql-connector-java:5.1.40')
 //	compile('org.springframework.data:spring-data-mongodb:1.10.1.RELEASE')
 
 	compile("com.querydsl:querydsl-jpa:${querydslVersion}")
@@ -35,10 +36,10 @@ dependencies {
 	compile 'org.apache.commons:commons-compress:1.13'
 	compile 'org.apache.commons:commons-lang3:3.5'
 
-	compile 'io.projectreactor:reactor-core:3.0.6.RELEASE'
+	compile 'io.projectreactor:reactor-core:3.0.7.RELEASE'
 
 	compile 'com.turn:ttorrent-core:1.5' //torrent
-    compile 'com.rometools:rome:1.7.2' //rss
+    compile 'com.rometools:rome:1.7.4' //rss
 
 	compileOnly('org.projectlombok:lombok')
 

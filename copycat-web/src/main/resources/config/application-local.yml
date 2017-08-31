@@ -1,0 +1,16 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: none
+      ejb.naming_strategy_delegator: org.hibernate.cfg.naming.ImprovedNamingStrategyDelegator
+    generate-ddl: false
+    show-sql: true
+  datasource:
+    url: jdbc:mysql://localhost:3306/xxxx?useUnicode=true&characterEncoding=UTF8&useSSL=false
+    username: xx
+    password: xx
+    driverClassName: com.mysql.jdbc.Driver
+
+    timeBetweenEvictionRunsMillis: 3600000
+    testWhileIdle: true
+    validationQuery: SELECT 1
