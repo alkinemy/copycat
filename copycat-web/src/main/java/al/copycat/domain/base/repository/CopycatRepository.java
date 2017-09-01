@@ -1,4 +1,4 @@
-package al.copycat.domain.common.repository;
+package al.copycat.domain.base.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.querydsl.QueryDslPredicateExecutor;
