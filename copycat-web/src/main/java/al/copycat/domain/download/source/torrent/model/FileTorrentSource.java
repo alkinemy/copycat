@@ -6,7 +6,7 @@ import lombok.Getter;
 import java.io.File;
 
 @Getter
-public class FileTorrentSource implements Source {
+public class FileTorrentSource implements Source<File> {
 
 	private File source;
 

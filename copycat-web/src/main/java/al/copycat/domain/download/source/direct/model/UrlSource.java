@@ -7,7 +7,7 @@ import java.io.File;
 import java.net.URL;
 
 @Getter
-public class UrlSource implements Source {
+public class UrlSource implements Source<URL> {
 
 	private URL source;
 

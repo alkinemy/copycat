@@ -7,7 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 
 @Getter
-public class MultipartFileSource implements Source {
+public class MultipartFileSource implements Source<MultipartFile> {
 
 	private MultipartFile source;
 

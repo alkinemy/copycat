@@ -6,7 +6,9 @@ import lombok.Getter;
 import java.io.File;
 
 @Getter
-public class MagnetTorrentSource implements Source {
+public class MagnetTorrentSource implements Source<String> {
+
+	private String source;
 
 	private File destination;
 
