@@ -1,5 +1,7 @@
 package al.copycat.domain.download.common.service;
 
+import al.copycat.domain.download.common.exception.DownloadException;
+import al.copycat.domain.download.source.common.model.Source;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -10,17 +12,18 @@ import javax.annotation.PostConstruct;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Slf4j
 @Service
-public class DownloadService {
+public class DownloadDelegateService {
 
 	private final ApplicationContext applicationContext;
 
 	private Map<Class, Downloader> downloaders = new HashMap<>();
 
 	@Autowired
-	public DownloadService(ApplicationContext applicationContext) {
+	public DownloadDelegateService(ApplicationContext applicationContext) {
 		this.applicationContext = applicationContext;
 	}
 
@@ -33,6 +36,12 @@ public class DownloadService {
 			log.info("Downloader bean(name: {}, type: {}) registered", beanName, downloadType);
 			downloaders.put(downloadType, downloader);
 		});
+	}
+
+	public void startDownload(Source source) {
+		Downloader downloader = Optional.ofNullable(downloaders.get(source.getClass()))
+			.orElseThrow(() -> new DownloadException("Unsupported download source: " + source.getClass()));
+		downloader.startDownload(source);
 	}
 
 }
