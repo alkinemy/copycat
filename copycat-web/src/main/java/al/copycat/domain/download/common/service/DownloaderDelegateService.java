@@ -16,14 +16,14 @@ import java.util.Optional;
 
 @Slf4j
 @Service
-public class DownloadDelegateService {
+public class DownloaderDelegateService {
 
 	private final ApplicationContext applicationContext;
 
 	private Map<Class, Downloader> downloaders = new HashMap<>();
 
 	@Autowired
-	public DownloadDelegateService(ApplicationContext applicationContext) {
+	public DownloaderDelegateService(ApplicationContext applicationContext) {
 		this.applicationContext = applicationContext;
 	}
 
