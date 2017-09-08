@@ -30,7 +30,7 @@ public class DownloaderDelegateService {
 	@PostConstruct
 	public void initialize() {
 		String[] beanNames = applicationContext.getBeanNamesForType(Downloader.class);
-		Arrays.stream(beanNames).forEach((String beanName) -> {
+		Arrays.stream(beanNames).forEach(beanName -> {
 			Downloader downloader = applicationContext.getBean(beanName, Downloader.class);
 			Class<?> downloadType = GenericTypeResolver.resolveTypeArgument(downloader.getClass(), Downloader.class);
 			log.info("Downloader bean(name: {}, type: {}) registered", beanName, downloadType);
