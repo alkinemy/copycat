@@ -1,3 +1,7 @@
+ext {
+    btVersion = '1.6'
+}
+
 buildscript {
 	repositories {
 		mavenCentral()
@@ -38,7 +42,11 @@ dependencies {
 
 	compile 'io.projectreactor:reactor-core:3.1.4.RELEASE'
 
-	compile 'com.turn:ttorrent-core:1.5' //torrent
+    //torrent
+	compile "com.github.atomashpolskiy:bt-core:${btVersion}"
+    compile "com.github.atomashpolskiy:bt-http-tracker-client:${btVersion}"
+    compile "com.github.atomashpolskiy:bt-dht:${btVersion}"
+
     compile 'com.rometools:rome:1.9.0' //rss
 
 	compileOnly('org.projectlombok:lombok')
