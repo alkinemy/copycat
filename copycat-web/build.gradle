@@ -36,10 +36,10 @@ dependencies {
 	compile 'org.apache.commons:commons-compress:1.13'
 	compile 'org.apache.commons:commons-lang3:3.5'
 
-	compile 'io.projectreactor:reactor-core:3.0.7.RELEASE'
+	compile 'io.projectreactor:reactor-core:3.1.4.RELEASE'
 
 	compile 'com.turn:ttorrent-core:1.5' //torrent
-    compile 'com.rometools:rome:1.7.4' //rss
+    compile 'com.rometools:rome:1.9.0' //rss
 
 	compileOnly('org.projectlombok:lombok')
 
