@@ -1,8 +1,8 @@
-package al.copycat.domain.download.source.direct.service;
+package al.copycat.domain.download.source.simple.service;
 
 import al.copycat.domain.download.common.exception.DownloadException;
-import al.copycat.domain.download.common.service.Downloader;
-import al.copycat.domain.download.source.direct.model.UrlSource;
+import al.copycat.domain.download.source.common.service.Downloader;
+import al.copycat.domain.download.source.simple.model.UrlSource;
 import org.springframework.stereotype.Service;
 
 import java.io.FileOutputStream;

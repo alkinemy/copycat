@@ -1,4 +1,4 @@
-package al.copycat.domain.download.source.direct.model;
+package al.copycat.domain.download.source.simple.model;
 
 import al.copycat.domain.download.source.common.model.Source;
 import lombok.Getter;

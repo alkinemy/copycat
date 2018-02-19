@@ -1,7 +1,7 @@
 package al.copycat.domain.download.source.torrent.service;
 
 import al.copycat.domain.download.common.exception.DownloadException;
-import al.copycat.domain.download.common.service.Downloader;
+import al.copycat.domain.download.source.common.service.Downloader;
 import al.copycat.domain.download.source.torrent.model.FileTorrentSource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

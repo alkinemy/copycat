@@ -1,4 +1,4 @@
-package al.copycat.domain.download.common.service;
+package al.copycat.domain.download.source.common.service;
 
 import al.copycat.domain.download.source.common.model.Source;
 

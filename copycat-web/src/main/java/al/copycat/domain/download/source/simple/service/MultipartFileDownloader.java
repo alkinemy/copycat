@@ -1,9 +1,9 @@
-package al.copycat.domain.download.source.direct.service;
+package al.copycat.domain.download.source.simple.service;
 
 import al.copycat.domain.base.util.CompressionUtils;
 import al.copycat.domain.download.common.exception.DownloadException;
-import al.copycat.domain.download.common.service.Downloader;
-import al.copycat.domain.download.source.direct.model.MultipartFileSource;
+import al.copycat.domain.download.source.common.service.Downloader;
+import al.copycat.domain.download.source.simple.model.MultipartFileSource;
 import org.springframework.stereotype.Service;
 
 @Service
