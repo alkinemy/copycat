@@ -16,7 +16,8 @@ public class FileTorrentDownloader implements Downloader<FileTorrentSource> {
 			TorrentClient client = TorrentClient.fromFile(torrent);
 			client.startDownload();
 		} catch (Exception e) {
-			throw new DownloadException("Fail to startDownload downloading torrent: " + torrent.getSource().getAbsolutePath(), e);
+			log.error("Fail to start downloading torrent: {}", torrent.getSource().getAbsolutePath(), e);
+			throw new DownloadException("Fail to start downloading torrent", e);
 		}
 	}
 

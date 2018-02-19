@@ -27,6 +27,11 @@ public class TorrentClient implements Closeable {
 		this.client = client;
 	}
 
+	private TorrentClient(BtClient client, int interval) {
+		this.client = client;
+		this.interval = interval;
+	}
+
 	public static TorrentClient fromMagnet(MagnetTorrentSource source) {
 		Storage storage = new FileSystemStorage(source.getDestination());
 		Module dhtModule = new DHTModule(new DHTConfig() {
@@ -59,6 +64,7 @@ public class TorrentClient implements Closeable {
 				.build();
 			return new TorrentClient(client);
 		} catch (MalformedURLException e) {
+			log.error("Fail to build torrent client: invalid file, {}", source.getSource().getAbsolutePath(), e);
 			throw new TorrentException("Fail to build torrent client: invalid file url", e);
 		}
 	}
