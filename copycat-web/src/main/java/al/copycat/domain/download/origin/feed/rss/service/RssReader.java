@@ -1,8 +1,9 @@
-package al.copycat.domain.download.origin.rss.service;
+package al.copycat.domain.download.origin.feed.rss.service;
 
-import al.copycat.domain.download.common.exception.DownloadException;
-import al.copycat.domain.download.origin.rss.model.Rss;
-import al.copycat.domain.download.origin.rss.model.RssFeed;
+import al.copycat.domain.download.origin.common.exception.OriginException;
+import al.copycat.domain.download.origin.feed.rss.model.Rss;
+import al.copycat.domain.download.origin.feed.rss.model.RssEntry;
+import com.rometools.rome.feed.synd.SyndEntry;
 import com.rometools.rome.feed.synd.SyndFeed;
 import com.rometools.rome.io.SyndFeedInput;
 import com.rometools.rome.io.XmlReader;
@@ -15,30 +16,32 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.InputStream;
-import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
-public class RssFeedReader {
+public class RssReader {
 
 	private final RestTemplate restTemplate;
 
 	@Autowired
-	public RssFeedReader(RestTemplate restTemplate) {
+	public RssReader(RestTemplate restTemplate) {
 		this.restTemplate = restTemplate;
 	}
 
-	public List<RssFeed> read(Rss rss) {
+	public List<RssEntry> read(Rss rss) {
 		ResponseEntity<Resource> responseEntity = restTemplate.exchange(rss.getUrl(), HttpMethod.GET, null, Resource.class);
 		try (InputStream inputStream = responseEntity.getBody().getInputStream()) {
 			SyndFeedInput input = new SyndFeedInput();
 			SyndFeed feed = input.build(new XmlReader(inputStream));
-			//FIXME feed mapping
-			return Collections.emptyList();
+			List<SyndEntry> entries = feed.getEntries();
+			return entries.stream()
+				.map(RssEntry::fromSyndEntry)
+				.collect(Collectors.toList());
 		} catch (Exception e) {
 			log.error("Fail to read feed", e);
-			throw new DownloadException("Fail to read feed", e);
+			throw new OriginException("Fail to read feed", e);
 		}
 	}
 }

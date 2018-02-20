@@ -1,10 +1,10 @@
-package al.copycat.domain.download.origin.rss.model;
+package al.copycat.domain.download.origin.feed.rss.model;
 
-import al.copycat.domain.download.origin.common.model.Origin;
+import al.copycat.domain.download.origin.feed.common.model.Feed;
 import lombok.Getter;
 
 @Getter
-public class Rss implements Origin {
+public class Rss implements Feed {
 
 	private String url;
 
