@@ -7,7 +7,7 @@ import lombok.ToString;
 
 @Getter
 @ToString
-public class RssEntry implements FeedEntry {
+public class RssEntry implements FeedEntry<Rss> {
 
 	private String title;
 	private String author;

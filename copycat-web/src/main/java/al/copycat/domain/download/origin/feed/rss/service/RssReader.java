@@ -31,6 +31,7 @@ public class RssReader implements FeedReader<Rss, RssEntry> {
 		this.restTemplate = restTemplate;
 	}
 
+	@Override
 	public List<RssEntry> read(Rss rss) {
 		ResponseEntity<Resource> responseEntity = restTemplate.exchange(rss.getUrl(), HttpMethod.GET, null, Resource.class);
 		try (InputStream inputStream = responseEntity.getBody().getInputStream()) {
@@ -45,4 +46,5 @@ public class RssReader implements FeedReader<Rss, RssEntry> {
 			throw new OriginException("Fail to read feed", e);
 		}
 	}
+
 }
