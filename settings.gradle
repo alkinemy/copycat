@@ -1,4 +1,4 @@
 rootProject.name = 'copycat'
 
-include 'copycat-web'
+include 'copycat-api'
 
