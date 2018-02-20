@@ -1,6 +1,7 @@
 package al.copycat.domain.download.origin.feed.rss.service;
 
 import al.copycat.domain.download.origin.common.exception.OriginException;
+import al.copycat.domain.download.origin.feed.common.service.FeedReader;
 import al.copycat.domain.download.origin.feed.rss.model.Rss;
 import al.copycat.domain.download.origin.feed.rss.model.RssEntry;
 import com.rometools.rome.feed.synd.SyndEntry;
@@ -21,7 +22,7 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
-public class RssReader {
+public class RssReader implements FeedReader<Rss, RssEntry> {
 
 	private final RestTemplate restTemplate;
 
