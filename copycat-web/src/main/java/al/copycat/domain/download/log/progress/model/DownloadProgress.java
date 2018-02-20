@@ -6,6 +6,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Getter
@@ -14,4 +15,8 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "download_progresses")
 public class DownloadProgress extends AbstractAuditingEntity {
+
+	@Id
+	private long id;
+
 }

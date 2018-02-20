@@ -8,4 +8,12 @@ public class Rss implements Origin {
 
 	private String url;
 
+	private Rss(String url) {
+		this.url = url;
+	}
+
+	public static Rss fromUrl(String url) {
+		return new Rss(url);
+	}
+
 }

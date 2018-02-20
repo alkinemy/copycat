@@ -1,6 +1,6 @@
 ext {
 	lombokVersion = '1.16.20'
-	spockVersion = '1.0-groovy-2.4'
+	spockVersion = '1.1-groovy-2.4'
 	springBootVersion = '1.5.10.RELEASE'
 	querydslVersion = '4.1.4'
 }

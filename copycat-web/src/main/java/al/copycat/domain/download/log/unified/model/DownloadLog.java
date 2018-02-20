@@ -15,4 +15,8 @@ import javax.persistence.*;
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "run_type")
 public class DownloadLog extends AbstractAuditingEntity {
+
+	@Id
+	private long id;
+
 }

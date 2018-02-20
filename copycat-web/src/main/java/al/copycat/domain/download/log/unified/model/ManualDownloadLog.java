@@ -6,6 +6,7 @@ import lombok.ToString;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Getter
@@ -15,4 +16,8 @@ import javax.persistence.Table;
 @Table(name = "manual_download_logs")
 @DiscriminatorValue(DownloadType.Values.MANUAL)
 public class ManualDownloadLog extends DownloadLog {
+
+	@Id
+	private long id;
+
 }

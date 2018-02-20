@@ -29,7 +29,7 @@ public class RssFeedReader {
 		this.restTemplate = restTemplate;
 	}
 
-	private List<RssFeed> read(Rss rss) {
+	public List<RssFeed> read(Rss rss) {
 		ResponseEntity<Resource> responseEntity = restTemplate.exchange(rss.getUrl(), HttpMethod.GET, null, Resource.class);
 		try (InputStream inputStream = responseEntity.getBody().getInputStream()) {
 			SyndFeedInput input = new SyndFeedInput();

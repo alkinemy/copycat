@@ -6,9 +6,9 @@ spring:
     generate-ddl: false
     show-sql: true
   datasource:
-    url: jdbc:mysql://localhost:3306/xxxx?useUnicode=true&characterEncoding=UTF8&useSSL=false
-    username: xx
-    password: xx
+    url: jdbc:mysql://localhost:3306/copycat?useUnicode=true&characterEncoding=UTF8&useSSL=false
+    username: copycat
+    password: copycat
     driverClassName: com.mysql.jdbc.Driver
 
     timeBetweenEvictionRunsMillis: 3600000
