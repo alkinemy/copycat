@@ -14,3 +14,12 @@ spring:
     timeBetweenEvictionRunsMillis: 3600000
     testWhileIdle: true
     validationQuery: SELECT 1
+
+spring.http:
+    multipart:
+      max-file-size: 1024MB
+      max-request-size: 1024MB
+
+copycat:
+  download:
+    root: /tmp

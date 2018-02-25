@@ -20,7 +20,7 @@
                 console.log(this.file);
                 var data = new FormData();
                 data.append("file", this.file);
-                await this.$axios.$post(process.env.baseUrl + '/uploads/files', data)
+                await this.$axios.$post(process.env.baseUrl + '/downloads/files', data)
                     .then(response => {
                         console.log('success');
                         console.log(response);
