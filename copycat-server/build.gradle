@@ -3,48 +3,48 @@ ext {
 }
 
 buildscript {
-	repositories {
-		mavenCentral()
-	}
-	dependencies {
-		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-	}
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
 }
 
 apply plugin: 'org.springframework.boot'
 
 
 idea {
-	module {
-		sourceDirs += file('generated/')
-	}
+    module {
+        sourceDirs += file('generated/')
+    }
 }
 
 jar {
-	baseName = 'copycat-server'
-	version = '0.0.1-SNAPSHOT'
+    baseName = 'copycat-server'
+    version = '0.0.1-SNAPSHOT'
 }
 
 dependencies {
 //	compile("org.springframework.boot:spring-boot:${springBootVersion}")
-	compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
-	compile("org.springframework.boot:spring-boot-starter-actuator:${springBootVersion}")
+    compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
+    compile("org.springframework.boot:spring-boot-starter-actuator:${springBootVersion}")
 
-	compile("org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}")
+    compile("org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}")
     compile('mysql:mysql-connector-java:5.1.40')
 //	compile('org.springframework.data:spring-data-mongodb:1.10.1.RELEASE')
 
-	compile("com.querydsl:querydsl-jpa:${querydslVersion}")
-	compile("com.querydsl:querydsl-apt:${querydslVersion}:jpa")
+    compile("com.querydsl:querydsl-jpa:${querydslVersion}")
+    compile("com.querydsl:querydsl-apt:${querydslVersion}:jpa")
 
-	compile 'org.apache.commons:commons-compress:1.13'
-	compile 'org.apache.commons:commons-lang3:3.5'
+    compile 'org.apache.commons:commons-compress:1.13'
+    compile 'org.apache.commons:commons-lang3:3.5'
     compile 'commons-io:commons-io:2.6'
 
-	compile 'io.projectreactor:reactor-core:3.1.4.RELEASE'
+    compile 'io.projectreactor:reactor-core:3.1.4.RELEASE'
 
     //torrent
-	compile "com.github.atomashpolskiy:bt-core:${btVersion}"
+    compile "com.github.atomashpolskiy:bt-core:${btVersion}"
     compile "com.github.atomashpolskiy:bt-http-tracker-client:${btVersion}"
     compile "com.github.atomashpolskiy:bt-dht:${btVersion}"
 
@@ -54,6 +54,6 @@ dependencies {
     compileOnly('org.projectlombok:lombok')
 
     testCompile("org.spockframework:spock-core:${spockVersion}")
-	testCompile("org.spockframework:spock-spring:${spockVersion}")
-	testCompile("org.springframework.boot:spring-boot-starter-test:${springBootVersion}")
+    testCompile("org.spockframework:spock-spring:${spockVersion}")
+    testCompile("org.springframework.boot:spring-boot-starter-test:${springBootVersion}")
 }
