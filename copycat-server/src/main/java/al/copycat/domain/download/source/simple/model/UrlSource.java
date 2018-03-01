@@ -2,7 +2,6 @@ package al.copycat.domain.download.source.simple.model;
 
 import al.copycat.domain.download.common.exception.DownloadException;
 import al.copycat.domain.download.source.common.model.Source;
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -13,11 +12,10 @@ import java.nio.file.Path;
 
 @Slf4j
 @Getter
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor(staticName = "of")
 public class UrlSource implements Source<URL> {
 
 	private URL source;
-
 	private Path destination;
 
 	public static UrlSource of(String source, Path destination) {

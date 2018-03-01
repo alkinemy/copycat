@@ -12,7 +12,6 @@ import java.nio.file.Path;
 public class MultipartFileSource implements Source<MultipartFile> {
 
 	private MultipartFile source;
-
 	private Path destination;
 
 }
