@@ -1,4 +1,4 @@
-package al.copycat.config;
+package al.copycat.config.web;
 
 import al.copycat.interfaces.CopycatWebs;
 import org.springframework.context.annotation.ComponentScan;

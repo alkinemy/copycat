@@ -47,7 +47,8 @@ dependencies {
     compile "com.github.atomashpolskiy:bt-http-tracker-client:${btVersion}"
     compile "com.github.atomashpolskiy:bt-dht:${btVersion}"
 
-    compile 'com.rometools:rome:1.9.0' //rss
+    //rss
+    compile 'com.rometools:rome:1.9.0'
 
     compileOnly('org.projectlombok:lombok')
 
