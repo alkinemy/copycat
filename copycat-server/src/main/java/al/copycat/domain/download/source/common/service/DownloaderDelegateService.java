@@ -9,6 +9,7 @@ import org.springframework.core.GenericTypeResolver;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -38,10 +39,10 @@ public class DownloaderDelegateService {
 		});
 	}
 
-	public void startDownload(Source source) {
+	public Path startDownload(Source source) {
 		Downloader downloader = Optional.ofNullable(downloaders.get(source.getClass()))
 			.orElseThrow(() -> new DownloadException("Unsupported download source: " + source.getClass()));
-		downloader.startDownload(source);
+		return downloader.startDownload(source);
 	}
 
 }
