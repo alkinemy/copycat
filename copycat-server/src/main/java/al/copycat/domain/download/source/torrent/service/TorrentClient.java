@@ -10,14 +10,16 @@ import bt.dht.DHTConfig;
 import bt.dht.DHTModule;
 import bt.runtime.BtClient;
 import com.google.inject.Module;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Mono;
 
 import java.io.Closeable;
-import java.io.IOException;
 import java.net.MalformedURLException;
 
 @Slf4j
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class TorrentClient implements Closeable {
 
 	private BtClient client;
@@ -25,11 +27,6 @@ public class TorrentClient implements Closeable {
 
 	private TorrentClient(BtClient client) {
 		this.client = client;
-	}
-
-	private TorrentClient(BtClient client, int interval) {
-		this.client = client;
-		this.interval = interval;
 	}
 
 	public static TorrentClient fromMagnet(MagnetTorrentSource source) {
@@ -75,7 +72,7 @@ public class TorrentClient implements Closeable {
 	}
 
 	@Override
-	public void close() throws IOException {
+	public void close() {
 		Mono.justOrEmpty(client)
 			.filter(BtClient::isStarted)
 			.doOnNext(BtClient::stop)
