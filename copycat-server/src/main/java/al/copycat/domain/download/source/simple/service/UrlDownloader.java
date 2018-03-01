@@ -15,7 +15,7 @@ public class UrlDownloader implements Downloader<UrlSource> {
 	@Override
 	public void startDownload(UrlSource url) {
 		try (ReadableByteChannel byteChannel = Channels.newChannel(url.getSource().openStream());
-			FileOutputStream outputStream = new FileOutputStream(url.getDestination())) {
+			FileOutputStream outputStream = new FileOutputStream(url.getDestination().toFile())) {
 
 			outputStream.getChannel().transferFrom(byteChannel, 0, Long.MAX_VALUE);
 		} catch (Exception e) {

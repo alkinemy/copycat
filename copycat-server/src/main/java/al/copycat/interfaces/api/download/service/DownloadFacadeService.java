@@ -1,31 +1,36 @@
 package al.copycat.interfaces.api.download.service;
 
+import al.copycat.config.DownloadProperties;
 import al.copycat.domain.download.source.common.service.DownloaderDelegateService;
 import al.copycat.domain.download.source.simple.model.MultipartFileSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import reactor.core.publisher.Mono;
 
-import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @Service
 public class DownloadFacadeService {
 
 	private final DownloaderDelegateService downloaderDelegateService;
 
-	@Value("${copycat.download.root}")
-	private String root;
+	private final DownloadProperties downloadProperties;
 
 	@Autowired
-	public DownloadFacadeService(DownloaderDelegateService downloaderDelegateService) {
+	public DownloadFacadeService(DownloaderDelegateService downloaderDelegateService, DownloadProperties downloadProperties) {
 		this.downloaderDelegateService = downloaderDelegateService;
+		this.downloadProperties = downloadProperties;
 	}
 
 	public Mono<Void> download(MultipartFile file) {
-		return Mono.fromCallable(() -> new File(root + "/" + file.getOriginalFilename()))
+		return Mono.fromCallable(() -> getDownloadPath(file))
 			.map(downloadPath -> MultipartFileSource.of(file, downloadPath))
 			.flatMap(source -> Mono.fromRunnable(() -> downloaderDelegateService.startDownload(source)));
+	}
+
+	private Path getDownloadPath(MultipartFile file) {
+		return Paths.get(downloadProperties.getRoot(), file.getOriginalFilename());
 	}
 }

@@ -4,12 +4,13 @@ import al.copycat.domain.download.source.common.model.Source;
 import lombok.Getter;
 
 import java.io.File;
+import java.nio.file.Path;
 
 @Getter
 public class FileTorrentSource implements Source<File> {
 
 	private File source;
 
-	private File destination;
+	private Path destination;
 
 }
