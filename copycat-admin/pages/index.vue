@@ -1,15 +1,15 @@
 <template>
     <div>
-        <FileUpload></FileUpload>
+        <FileDownload></FileDownload>
     </div>
 </template>
 
 <script>
-    import FileUpload from '../components/FileUpload.vue'
+    import FileDownload from '../components/FileDownload.vue'
 
     export default {
         components: {
-            'FileUpload': FileUpload
+            'FileDownload': FileDownload
         }
     }
 </script>

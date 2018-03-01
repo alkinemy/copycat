@@ -1,8 +1,9 @@
 <template>
     <div>
+        <h1>SimpleFile download</h1>
         <b-form @submit="onSubmit">
             <b-form-file v-model="file" :state="Boolean(file)" placeholder="Choose a file..."></b-form-file>
-            <b-button type="submit">Upload</b-button>
+            <b-button type="submit">Download</b-button>
         </b-form>
     </div>
 </template>
