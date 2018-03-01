@@ -20,6 +20,13 @@ spring.http:
       max-file-size: 1024MB
       max-request-size: 1024MB
 
+logging:
+  level.: INFO
+  level.al.copycat: DEBUG
+  file: ./logs/copycat-server.log
+
 copycat:
   download:
     root: /tmp
+
+

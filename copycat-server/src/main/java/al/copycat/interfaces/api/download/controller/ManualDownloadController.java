@@ -20,9 +20,16 @@ public class ManualDownloadController {
 	}
 
 	@PostMapping("/downloads/files")
-	public void download(@RequestParam("file") MultipartFile file) {
-		log.info("file: {}, {}", file.getOriginalFilename());
+	public void downloadFromFile(@RequestParam("file") MultipartFile file) {
+		log.debug("download file: {}", file.getOriginalFilename());
 		downloadFacadeService.download(file)
+			.block();
+	}
+
+	@PostMapping("/downloads/urls")
+	public void downloadUrl(String url) {
+		log.debug("download url: {}", url);
+		downloadFacadeService.download(url)
 			.block();
 	}
 
