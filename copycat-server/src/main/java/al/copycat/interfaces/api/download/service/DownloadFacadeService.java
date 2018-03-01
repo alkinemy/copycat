@@ -24,9 +24,8 @@ public class DownloadFacadeService {
 	}
 
 	public Mono<Void> download(MultipartFile file) {
-		File downloadPath = new File(root + "/" + file.getOriginalFilename());
-		return Mono.just(file)
-			.map(multipartFile -> MultipartFileSource.of(file, downloadPath))
+		return Mono.fromCallable(() -> new File(root + "/" + file.getOriginalFilename()))
+			.map(downloadPath -> MultipartFileSource.of(file, downloadPath))
 			.flatMap(source -> Mono.fromRunnable(() -> downloaderDelegateService.startDownload(source)));
 	}
 }
