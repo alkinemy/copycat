@@ -8,16 +8,18 @@ import org.springframework.stereotype.Service;
 import java.io.FileOutputStream;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
+import java.nio.file.Path;
 
 @Service
 public class UrlDownloader implements Downloader<UrlSource> {
 
 	@Override
-	public void startDownload(UrlSource url) {
+	public Path startDownload(UrlSource url) {
 		try (ReadableByteChannel byteChannel = Channels.newChannel(url.getSource().openStream());
 			FileOutputStream outputStream = new FileOutputStream(url.getDestination().toFile())) {
 
 			outputStream.getChannel().transferFrom(byteChannel, 0, Long.MAX_VALUE);
+			return url.getDestination();
 		} catch (Exception e) {
 			throw new DownloadException("Fail to start downloading url: " + url.getSource(), e);
 		}

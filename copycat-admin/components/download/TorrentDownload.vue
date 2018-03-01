@@ -1,8 +1,8 @@
 <template>
     <div>
-        <h1>Url download</h1>
-        <b-form @submit="downloadUrl">
-            <b-form-input v-model="url" type="text" placeholder="Enter url"></b-form-input>
+        <h1>Torrent download(file link)</h1>
+        <b-form @submit="downloadTorrent">
+            <b-form-input v-model="torrent" type="text" placeholder="Enter url"></b-form-input>
             <b-button type="submit">Download</b-button>
         </b-form>
     </div>
@@ -12,20 +12,22 @@
     export default {
         data () {
             return {
-                url: null
+                torrent: null
             }
         },
         methods: {
-            async downloadUrl(event) {
+            async downloadTorrent(event) {
                 event.preventDefault();
                 let data = {
-                    "url": this.url
+                    "torrent": this.torrent,
                 };
-                await this.$axios.$post(process.env.baseUrl + '/downloads/urls', data)
+                await this.$axios.$post(process.env.baseUrl + '/downloads/torrents', data, {
+                    'Content-Type': 'application/json'
+                })
                     .then(response => {
                         console.log('success');
                         console.log(response);
-                        this.url = "";
+                        this.torrent = "";
                     })
                     .catch(error => {
                         console.log('error');
