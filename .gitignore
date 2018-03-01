@@ -58,3 +58,4 @@ nbdist/
 
 
 generated/
+*.log
