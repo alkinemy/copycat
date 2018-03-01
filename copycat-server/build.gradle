@@ -21,7 +21,7 @@ idea {
 }
 
 jar {
-	baseName = 'copycat-api'
+	baseName = 'copycat-server'
 	version = '0.0.1-SNAPSHOT'
 }
 
