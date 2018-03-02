@@ -37,9 +37,8 @@ public class DownloadApiFacadeService {
 
 	public Mono<Void> download(MultipartFileDownloadDto downloadDto) {
 		Mono<MultipartFileSource> sourceMono = Mono.fromCallable(() -> MultipartFileSource.of(downloadDto.getFile()));
-		Mono<Path> downloadPathMono = Mono.fromCallable(
-			() -> Paths.get(downloadProperties.getContentRoot(), downloadDto.getFile().getOriginalFilename()));
-
+		Mono<Path> downloadPathMono = Mono.fromCallable(() -> Paths.get(downloadProperties.getContentRoot()))
+			.map(path -> path.resolve(downloadDto.getFile().getOriginalFilename()));
 		return Mono.defer(() -> Mono.zip(sourceMono, downloadPathMono))
 			.map(tuple -> MultipartFileDownloadForm.of(tuple.getT1(), tuple.getT2()))
 			.map(downloaderDelegateService::download)
@@ -51,7 +50,6 @@ public class DownloadApiFacadeService {
 		Mono<UrlSource> sourceMono = Mono.fromCallable(() -> UrlSource.of(downloadDto.getUrl()));
 		Mono<Path> downloadPathMono = Mono.fromCallable(() -> FilenameUtils.getName(downloadDto.getUrl()))
 			.map(fileName -> Paths.get(downloadProperties.getRoot(), fileName));
-
 		return Mono.defer(() -> Mono.zip(sourceMono, downloadPathMono))
 			.map(tuple -> UrlDownloadForm.of(tuple.getT1(), tuple.getT2()))
 			.map(downloaderDelegateService::download)
@@ -70,10 +68,9 @@ public class DownloadApiFacadeService {
 	private Mono<Tuple2<Path, Path>> urlTorrentPathMono(String torrentName) {
 		return Mono.just(torrentName)
 			.flatMap(name -> Mono.zip(
-				Mono.fromCallable(
-					() -> Paths.get(downloadProperties.getTorrent().getRoot(), torrentName + downloadProperties.getTorrent().getSuffix())),
-				Mono.fromCallable(
-					() -> Paths.get(downloadProperties.getContentRoot()))
+				Mono.fromCallable(() -> Paths.get(downloadProperties.getTorrent().getRoot()))
+					.map(path -> path.resolve(torrentName + downloadProperties.getTorrent().getSuffix())),
+				Mono.fromCallable(() -> Paths.get(downloadProperties.getContentRoot()))
 			));
 	}
 
