@@ -1,7 +1,10 @@
 package al.copycat.interfaces.api.download.service;
 
 import al.copycat.config.DownloadProperties;
-import al.copycat.domain.download.source.common.service.DownloadFacadeService;
+import al.copycat.domain.download.execution.common.service.DownloadFacadeService;
+import al.copycat.domain.download.execution.simple.model.MultipartFileDownloadForm;
+import al.copycat.domain.download.execution.simple.model.UrlDownloadForm;
+import al.copycat.domain.download.execution.torrent.model.UrlTorrentDownloadForm;
 import al.copycat.domain.download.source.simple.model.MultipartFileSource;
 import al.copycat.domain.download.source.simple.model.UrlSource;
 import al.copycat.domain.download.source.torrent.model.UrlTorrentSource;
@@ -13,7 +16,9 @@ import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
+import reactor.util.function.Tuple2;
 
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
 @Slf4j
@@ -31,25 +36,45 @@ public class DownloadApiFacadeService {
 	}
 
 	public Mono<Void> download(MultipartFileDownloadDto downloadDto) {
-		return Mono.fromCallable(() -> Paths.get(downloadProperties.getRoot(), downloadDto.getFile().getOriginalFilename()))
-			.map(downloadPath -> MultipartFileSource.of(downloadDto.getFile(), downloadPath))
+		Mono<MultipartFileSource> sourceMono = Mono.fromCallable(() -> MultipartFileSource.of(downloadDto.getFile()));
+		Mono<Path> downloadPathMono = Mono.fromCallable(
+			() -> Paths.get(downloadProperties.getContentRoot(), downloadDto.getFile().getOriginalFilename()));
+
+		return Mono.defer(() -> Mono.zip(sourceMono, downloadPathMono))
+			.map(tuple -> MultipartFileDownloadForm.of(tuple.getT1(), tuple.getT2()))
 			.map(downloaderDelegateService::download)
 			.then();
 	}
 
+	//FIXME: tuple(t1, t2) is implicit indicator, apply explicit indicator
 	public Mono<Void> download(UrlDownloadDto downloadDto) {
-		return Mono.fromCallable(() -> FilenameUtils.getName(downloadDto.getUrl()))
-			.map(fileName -> Paths.get(downloadProperties.getRoot(), fileName))
-			.map(downloadPath -> UrlSource.of(downloadDto.getUrl(), downloadPath))
+		Mono<UrlSource> sourceMono = Mono.fromCallable(() -> UrlSource.of(downloadDto.getUrl()));
+		Mono<Path> downloadPathMono = Mono.fromCallable(() -> FilenameUtils.getName(downloadDto.getUrl()))
+			.map(fileName -> Paths.get(downloadProperties.getRoot(), fileName));
+
+		return Mono.defer(() -> Mono.zip(sourceMono, downloadPathMono))
+			.map(tuple -> UrlDownloadForm.of(tuple.getT1(), tuple.getT2()))
 			.map(downloaderDelegateService::download)
 			.then();
 	}
 
+	//FIXME: tuple(t1, t2) is implicit indicator, apply explicit indicator
 	public Mono<Void> download(TorrentDownloadDto downloadDto) {
-		return Mono.fromCallable(() -> Paths.get(downloadProperties.getRoot()))
-			.map(downloadRoot -> UrlTorrentSource.fromUrl(downloadDto.getTorrent(), downloadRoot))
+		return Mono.defer(() -> Mono.fromCallable(() -> UrlTorrentSource.fromUrl(downloadDto.getTorrent())))
+			.flatMap(source -> Mono.just(source).zipWith(urlTorrentPathMono(source.getMetadata().getName())))
+			.map(tuple -> UrlTorrentDownloadForm.of(tuple.getT1(), tuple.getT2().getT1(), tuple.getT2().getT2()))
 			.map(downloaderDelegateService::download)
 			.then();
+	}
+
+	private Mono<Tuple2<Path, Path>> urlTorrentPathMono(String torrentName) {
+		return Mono.just(torrentName)
+			.flatMap(name -> Mono.zip(
+				Mono.fromCallable(
+					() -> Paths.get(downloadProperties.getTorrent().getRoot(), torrentName + downloadProperties.getTorrent().getSuffix())),
+				Mono.fromCallable(
+					() -> Paths.get(downloadProperties.getContentRoot()))
+			));
 	}
 
 }

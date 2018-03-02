@@ -28,5 +28,8 @@ logging:
 copycat:
   download:
     root: /tmp
-
-
+    content:
+      root: ${copycat.download.root}/contents
+    torrent:
+      root: ${copycat.download.root}/torrent
+      suffix: .torrnet

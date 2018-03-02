@@ -5,13 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.nio.file.Path;
-
 @Getter
 @AllArgsConstructor(staticName = "of")
 public class MultipartFileSource implements Source<MultipartFile> {
 
 	private MultipartFile source;
-	private Path destination;
 
 }

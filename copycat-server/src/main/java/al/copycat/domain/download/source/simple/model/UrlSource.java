@@ -8,7 +8,6 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.file.Path;
 
 @Slf4j
 @Getter
@@ -16,12 +15,11 @@ import java.nio.file.Path;
 public class UrlSource implements Source<URL> {
 
 	private URL source;
-	private Path destination;
 
-	public static UrlSource of(String source, Path destination) {
+	public static UrlSource of(String source) {
 		try {
 			URL url = new URL(source);
-			return new UrlSource(url, destination);
+			return new UrlSource(url);
 		} catch (MalformedURLException e) {
 			log.error("Invalid URL: {}", source, e);
 			throw new DownloadException("Invalid URL: " + source, e);

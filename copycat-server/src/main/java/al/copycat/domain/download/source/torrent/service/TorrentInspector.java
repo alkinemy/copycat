@@ -10,8 +10,12 @@ public class TorrentInspector {
 
 	private MetadataService metadataService;
 
-	public TorrentInspector() {
+	private TorrentInspector() {
 		this.metadataService = new MetadataService();
+	}
+
+	public static TorrentInspector create() {
+		return new TorrentInspector();
 	}
 
 	public TorrentMetadata getMetadata(URL url) {

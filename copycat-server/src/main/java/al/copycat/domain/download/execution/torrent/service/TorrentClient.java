@@ -1,8 +1,8 @@
-package al.copycat.domain.download.source.torrent.service;
+package al.copycat.domain.download.execution.torrent.service;
 
+import al.copycat.domain.download.execution.torrent.model.FileTorrentDownloadForm;
+import al.copycat.domain.download.execution.torrent.model.MagnetTorrentDownloadForm;
 import al.copycat.domain.download.source.torrent.exception.TorrentException;
-import al.copycat.domain.download.source.torrent.model.FileTorrentSource;
-import al.copycat.domain.download.source.torrent.model.MagnetTorrentSource;
 import bt.Bt;
 import bt.data.Storage;
 import bt.data.file.FileSystemStorage;
@@ -25,31 +25,31 @@ public class TorrentClient implements Closeable {
 
 	private BtClient client;
 	private int interval = 1000; // 1 sec
-	private String path;
+	private String torrentPath;
 
-	private TorrentClient(BtClient client, String path) {
+	private TorrentClient(BtClient client, String torrentPath) {
 		this.client = client;
-		this.path = path;
+		this.torrentPath = torrentPath;
 	}
 
-	public static TorrentClient fromMagnet(MagnetTorrentSource source) {
-		Storage storage = new FileSystemStorage(source.getDestination());
+	public static TorrentClient fromMagnet(MagnetTorrentDownloadForm downloadForm) {
+		Storage storage = new FileSystemStorage(downloadForm.getTorrentContentDownloadTo());
 		Module dhtModule = new DHTModule(new DHTConfig() {
 			@Override public boolean shouldUseRouterBootstrap() {
 				return true;
 			}
 		});
 		BtClient client = Bt.client()
-			.magnet(source.getSource())
+			.magnet(downloadForm.getFrom().getSource())
 			.storage(storage)
 			.autoLoadModules()
 			.module(dhtModule)
 			.build();
-		return new TorrentClient(client, source.getSource());
+		return new TorrentClient(client, downloadForm.getFrom().getSource());
 	}
 
-	public static TorrentClient fromFile(FileTorrentSource source) {
-		Storage storage = new FileSystemStorage(source.getDestination());
+	public static TorrentClient fromFile(FileTorrentDownloadForm downloadForm) {
+		Storage storage = new FileSystemStorage(downloadForm.getTorrentContentDownloadTo());
 		Module dhtModule = new DHTModule(new DHTConfig() {
 			@Override public boolean shouldUseRouterBootstrap() {
 				return true;
@@ -57,15 +57,16 @@ public class TorrentClient implements Closeable {
 		});
 		try {
 			BtClient client = Bt.client()
-				.torrent(source.getSource().toURI().toURL())
+				.torrent(downloadForm.getFrom().getSource().toURI().toURL())
 				.storage(storage)
 				.autoLoadModules()
 				.module(dhtModule)
 				.stopWhenDownloaded()
 				.build();
-			return new TorrentClient(client, source.getSource().getAbsolutePath());
+			return new TorrentClient(client, downloadForm.getFrom().getSource().getAbsolutePath());
 		} catch (MalformedURLException e) {
-			log.error("Fail to build torrent client: invalid file, {}", source.getSource().getAbsolutePath(), e);
+			String torrentFilePath = downloadForm.getFrom().getSource().getAbsolutePath();
+			log.error("Fail to build torrent client: invalid file, {}", torrentFilePath, e);
 			throw new TorrentException("Fail to build torrent client: invalid file url", e);
 		}
 	}
@@ -73,9 +74,9 @@ public class TorrentClient implements Closeable {
 	public void startDownload() {
 		//FIXME: db에 로그 저장
 		Mono.fromFuture(client.startAsync(state -> {
-			log.debug("Download torrent({}), remain: {}", path, state.getPiecesRemaining());
+			log.debug("Download torrent({}), remain: {}", torrentPath, state.getPiecesRemaining());
 			if (state.getPiecesRemaining() == 0) {
-				log.debug("Download completed, close client: {}", path);
+				log.debug("Download completed, close client: {}", torrentPath);
 				close();
 			}
 		}, interval))
@@ -84,7 +85,7 @@ public class TorrentClient implements Closeable {
 
 	@Override
 	public void close() {
-		log.info("Close torrent client: {}", path);
+		log.info("Close torrent client: {}", torrentPath);
 		Optional.ofNullable(client)
 			.filter(BtClient::isStarted)
 			.ifPresent(BtClient::stop);

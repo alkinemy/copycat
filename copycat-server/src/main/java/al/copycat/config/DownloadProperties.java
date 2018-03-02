@@ -10,5 +10,14 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class DownloadProperties {
 
 	private String root;
+	private String contentRoot;
+	private TorrentProperties torrent;
+
+	@Getter
+	@Setter
+	public static class TorrentProperties {
+		private String root;
+		private String suffix;
+	}
 
 }
