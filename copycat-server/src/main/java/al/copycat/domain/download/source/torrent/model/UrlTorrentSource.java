@@ -23,7 +23,7 @@ public class UrlTorrentSource implements TorrentSource<URL> {
 	private TorrentMetadata metadata;
 
 	public Path getDestination() {
-		return torrentDownloadDestination;
+		return getTorrentDownloadDestination();
 	}
 
 	public static UrlTorrentSource fromUrl(String source, Path downloadRoot) {
