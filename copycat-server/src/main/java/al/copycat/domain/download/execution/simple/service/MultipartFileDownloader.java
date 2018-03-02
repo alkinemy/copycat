@@ -1,6 +1,7 @@
 package al.copycat.domain.download.execution.simple.service;
 
 import al.copycat.domain.base.util.CompressionUtils;
+import al.copycat.domain.base.util.FileUtils;
 import al.copycat.domain.download.common.exception.DownloadException;
 import al.copycat.domain.download.execution.common.service.Downloader;
 import al.copycat.domain.download.execution.simple.model.MultipartFileDownloadForm;
@@ -17,6 +18,8 @@ public class MultipartFileDownloader implements Downloader<MultipartFileDownload
 	@Override
 	public Path startDownload(MultipartFileDownloadForm downloadForm) {
 		try {
+			FileUtils.createDirectories(downloadForm.getDownloadTo());
+
 			File destination = downloadForm.getDownloadTo().toFile();
 			log.debug("Download file to: {}", destination);
 			downloadForm.getFrom().getSource().transferTo(destination);

@@ -1,13 +1,12 @@
 package al.copycat.domain.download.execution.torrent.service;
 
-import al.copycat.domain.base.util.FileUtils;
 import al.copycat.domain.download.common.exception.DownloadException;
 import al.copycat.domain.download.execution.common.service.Downloader;
 import al.copycat.domain.download.execution.simple.model.UrlDownloadForm;
+import al.copycat.domain.download.execution.simple.service.UrlDownloader;
 import al.copycat.domain.download.execution.torrent.model.FileTorrentDownloadForm;
 import al.copycat.domain.download.execution.torrent.model.UrlTorrentDownloadForm;
 import al.copycat.domain.download.source.simple.model.UrlSource;
-import al.copycat.domain.download.execution.simple.service.UrlDownloader;
 import al.copycat.domain.download.source.torrent.model.FileTorrentSource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +34,6 @@ public class UrlTorrentDownloader implements Downloader<UrlTorrentDownloadForm> 
 	public Path startDownload(UrlTorrentDownloadForm downloadForm) {
 		try {
 			Path torrentFilePath = downloadTorrentFileFromUrl(downloadForm);
-			FileUtils.createDirectories(downloadForm.getTorrentContentDownloadTo());
 			return downloadTorrentContentFromTorrentFile(downloadForm, torrentFilePath);
 		} catch (Exception e) {
 			log.error("Fail to start downloading url torrent: {}", downloadForm.getFrom().getSource(), e);

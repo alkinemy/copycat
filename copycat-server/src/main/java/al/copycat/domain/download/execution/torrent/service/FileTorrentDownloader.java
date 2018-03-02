@@ -1,5 +1,6 @@
 package al.copycat.domain.download.execution.torrent.service;
 
+import al.copycat.domain.base.util.FileUtils;
 import al.copycat.domain.download.common.exception.DownloadException;
 import al.copycat.domain.download.execution.common.service.Downloader;
 import al.copycat.domain.download.execution.torrent.model.FileTorrentDownloadForm;
@@ -15,6 +16,8 @@ public class FileTorrentDownloader implements Downloader<FileTorrentDownloadForm
 	@Override
 	public Path startDownload(FileTorrentDownloadForm downloadForm) {
 		try {
+			FileUtils.createDirectories(downloadForm.getTorrentContentDownloadTo());
+
 			TorrentClient client = TorrentClient.fromFile(downloadForm);
 			log.debug("Download torrent contents to: {}", downloadForm.getTorrentContentDownloadTo());
 			client.startDownload();

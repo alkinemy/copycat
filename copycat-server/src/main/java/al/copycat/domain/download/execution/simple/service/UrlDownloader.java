@@ -1,5 +1,6 @@
 package al.copycat.domain.download.execution.simple.service;
 
+import al.copycat.domain.base.util.FileUtils;
 import al.copycat.domain.download.common.exception.DownloadException;
 import al.copycat.domain.download.execution.common.service.Downloader;
 import al.copycat.domain.download.execution.simple.model.UrlDownloadForm;
@@ -18,6 +19,7 @@ public class UrlDownloader implements Downloader<UrlDownloadForm> {
 		try (ReadableByteChannel byteChannel = Channels.newChannel(downloadForm.getFrom().getSource().openStream());
 			FileOutputStream outputStream = new FileOutputStream(downloadForm.getDownloadTo().toFile())) {
 
+			FileUtils.createDirectories(downloadForm.getDownloadTo());
 			outputStream.getChannel().transferFrom(byteChannel, 0, Long.MAX_VALUE);
 			return downloadForm.getDownloadTo();
 		} catch (Exception e) {
