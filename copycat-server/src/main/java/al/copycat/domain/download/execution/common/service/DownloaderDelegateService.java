@@ -41,7 +41,7 @@ public class DownloaderDelegateService {
 
 	public Path startDownload(DownloadForm downloadForm) {
 		Downloader downloader = Optional.ofNullable(downloaders.get(downloadForm.getClass()))
-			.orElseThrow(() -> new DownloadException("Unsupported download source: " + downloadForm.getClass()));
+			.orElseThrow(() -> new DownloadException("Unsupported download type: " + downloadForm.getClass()));
 		return downloader.startDownload(downloadForm);
 	}
 

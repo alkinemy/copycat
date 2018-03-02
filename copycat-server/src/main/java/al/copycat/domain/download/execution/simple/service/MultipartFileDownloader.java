@@ -30,6 +30,7 @@ public class MultipartFileDownloader implements Downloader<MultipartFileDownload
 			}
 			return downloadForm.getDownloadTo();
 		} catch (Exception e) {
+			log.error("Fail to start downloading multipart file: {}", downloadForm.getFrom().getSource().getOriginalFilename(), e);
 			throw new DownloadException("Fail to start downloading multipart file: " + downloadForm.getFrom().getSource().getOriginalFilename(), e);
 		}
 	}

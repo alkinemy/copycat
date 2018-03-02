@@ -4,6 +4,7 @@ import al.copycat.domain.base.util.FileUtils;
 import al.copycat.domain.download.common.exception.DownloadException;
 import al.copycat.domain.download.execution.common.service.Downloader;
 import al.copycat.domain.download.execution.simple.model.UrlDownloadForm;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.io.FileOutputStream;
@@ -11,6 +12,7 @@ import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.file.Path;
 
+@Slf4j
 @Service
 public class UrlDownloader implements Downloader<UrlDownloadForm> {
 
@@ -23,6 +25,7 @@ public class UrlDownloader implements Downloader<UrlDownloadForm> {
 			outputStream.getChannel().transferFrom(byteChannel, 0, Long.MAX_VALUE);
 			return downloadForm.getDownloadTo();
 		} catch (Exception e) {
+			log.error("Fail to start downloading url: {}", downloadForm.getFrom(), e);
 			throw new DownloadException("Fail to start downloading url: " + downloadForm.getFrom(), e);
 		}
 	}
