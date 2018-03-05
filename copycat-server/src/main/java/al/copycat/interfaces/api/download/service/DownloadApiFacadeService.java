@@ -4,10 +4,13 @@ import al.copycat.config.DownloadProperties;
 import al.copycat.domain.download.execution.common.service.DownloadFacadeService;
 import al.copycat.domain.download.execution.simple.model.MultipartFileDownloadForm;
 import al.copycat.domain.download.execution.simple.model.UrlDownloadForm;
+import al.copycat.domain.download.execution.torrent.model.MagnetTorrentDownloadForm;
 import al.copycat.domain.download.execution.torrent.model.UrlTorrentDownloadForm;
 import al.copycat.domain.download.source.simple.model.MultipartFileSource;
 import al.copycat.domain.download.source.simple.model.UrlSource;
+import al.copycat.domain.download.source.torrent.model.MagnetTorrentSource;
 import al.copycat.domain.download.source.torrent.model.UrlTorrentSource;
+import al.copycat.interfaces.api.download.dto.MagnetDownloadDto;
 import al.copycat.interfaces.api.download.dto.MultipartFileDownloadDto;
 import al.copycat.interfaces.api.download.dto.TorrentDownloadDto;
 import al.copycat.interfaces.api.download.dto.UrlDownloadDto;
@@ -52,6 +55,15 @@ public class DownloadApiFacadeService {
 			.map(fileName -> Paths.get(downloadProperties.getRoot(), fileName));
 		return Mono.defer(() -> Mono.zip(sourceMono, downloadPathMono))
 			.map(tuple -> UrlDownloadForm.of(tuple.getT1(), tuple.getT2()))
+			.map(downloaderDelegateService::download)
+			.then();
+	}
+
+	public Mono<Void> download(MagnetDownloadDto downloadDto) {
+		Mono<MagnetTorrentSource> sourceMono = Mono.fromCallable(() -> MagnetTorrentSource.fromMagnet(downloadDto.getTorrent()));
+		Mono<Path> downloadPathMono = Mono.fromCallable(() -> Paths.get(downloadProperties.getContentRoot()));
+		return Mono.defer(() -> Mono.zip(sourceMono, downloadPathMono))
+			.map(tuple -> MagnetTorrentDownloadForm.of(tuple.getT1(), tuple.getT2()))
 			.map(downloaderDelegateService::download)
 			.then();
 	}
