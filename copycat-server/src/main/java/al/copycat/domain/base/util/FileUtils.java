@@ -22,4 +22,8 @@ public abstract class FileUtils {
 		}
 	}
 
+	public static Path createParentDirectories(Path path) {
+		return createDirectories(path.getParent());
+	}
+
 }

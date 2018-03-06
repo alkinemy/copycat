@@ -51,9 +51,10 @@ dependencies {
     //rss
     compile 'com.rometools:rome:1.9.0'
 
-    compileOnly('org.projectlombok:lombok')
+    compileOnly("org.projectlombok:lombok:${lombokVersion}")
 
     testCompile("org.spockframework:spock-core:${spockVersion}")
     testCompile("org.spockframework:spock-spring:${spockVersion}")
     testCompile("org.springframework.boot:spring-boot-starter-test:${springBootVersion}")
+    testCompileOnly("org.projectlombok:lombok:${lombokVersion}")
 }

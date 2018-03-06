@@ -1,15 +1,21 @@
 package al.copycat.domain.download.source.torrent.model;
 
-import al.copycat.domain.download.source.common.model.Source;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
-import java.nio.file.Path;
-
+@Slf4j
 @Getter
-public class MagnetTorrentSource implements Source<String> {
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+public class MagnetTorrentSource implements TorrentSource<String> {
 
 	private String source;
+	private TorrentMetadata metadata;
 
-	private Path destination;
+	public static MagnetTorrentSource fromMagnet(String source) {
+		//FIXME use MagnetTorrentInspector
+		return new MagnetTorrentSource(source, null);
+	}
 
 }

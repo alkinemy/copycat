@@ -1,7 +1,7 @@
-package al.copycat.domain.download.source.common.service;
+package al.copycat.domain.download.execution.common.service;
 
 import al.copycat.domain.download.common.exception.DownloadException;
-import al.copycat.domain.download.source.common.model.Source;
+import al.copycat.domain.download.execution.common.model.DownloadForm;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -39,10 +39,10 @@ public class DownloaderDelegateService {
 		});
 	}
 
-	public Path startDownload(Source source) {
-		Downloader downloader = Optional.ofNullable(downloaders.get(source.getClass()))
-			.orElseThrow(() -> new DownloadException("Unsupported download source: " + source.getClass()));
-		return downloader.startDownload(source);
+	public Path startDownload(DownloadForm downloadForm) {
+		Downloader downloader = Optional.ofNullable(downloaders.get(downloadForm.getClass()))
+			.orElseThrow(() -> new DownloadException("Unsupported download type: " + downloadForm.getClass()));
+		return downloader.startDownload(downloadForm);
 	}
 
 }
