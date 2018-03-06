@@ -18,12 +18,15 @@ public class UrlDownloader implements Downloader<UrlDownloadForm> {
 
 	@Override
 	public Path startDownload(UrlDownloadForm downloadForm) {
-		try (ReadableByteChannel byteChannel = Channels.newChannel(downloadForm.getFrom().getSource().openStream());
-			FileOutputStream outputStream = new FileOutputStream(downloadForm.getDownloadTo().toFile())) {
+		try {
+			FileUtils.createParentDirectories(downloadForm.getDownloadTo());
 
-			FileUtils.createDirectories(downloadForm.getDownloadTo());
-			outputStream.getChannel().transferFrom(byteChannel, 0, Long.MAX_VALUE);
-			return downloadForm.getDownloadTo();
+			try (ReadableByteChannel byteChannel = Channels.newChannel(downloadForm.getFrom().getSource().openStream());
+				FileOutputStream outputStream = new FileOutputStream(downloadForm.getDownloadTo().toFile())) {
+
+				outputStream.getChannel().transferFrom(byteChannel, 0, Long.MAX_VALUE);
+				return downloadForm.getDownloadTo();
+			}
 		} catch (Exception e) {
 			log.error("Fail to start downloading url: {}", downloadForm.getFrom(), e);
 			throw new DownloadException("Fail to start downloading url: " + downloadForm.getFrom(), e);

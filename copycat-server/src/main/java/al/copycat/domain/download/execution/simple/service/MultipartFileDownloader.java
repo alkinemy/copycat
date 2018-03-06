@@ -18,7 +18,7 @@ public class MultipartFileDownloader implements Downloader<MultipartFileDownload
 	@Override
 	public Path startDownload(MultipartFileDownloadForm downloadForm) {
 		try {
-			FileUtils.createDirectories(downloadForm.getDownloadTo());
+			FileUtils.createParentDirectories(downloadForm.getDownloadTo());
 
 			File destination = downloadForm.getDownloadTo().toFile();
 			log.debug("Download file to: {}", destination);

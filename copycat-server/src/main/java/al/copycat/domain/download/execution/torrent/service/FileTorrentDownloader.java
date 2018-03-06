@@ -16,7 +16,7 @@ public class FileTorrentDownloader implements Downloader<FileTorrentDownloadForm
 	@Override
 	public Path startDownload(FileTorrentDownloadForm downloadForm) {
 		try {
-			FileUtils.createDirectories(downloadForm.getTorrentContentDownloadTo());
+			FileUtils.createParentDirectories(downloadForm.getTorrentContentDownloadTo());
 
 			TorrentClient client = TorrentClient.fromFile(downloadForm);
 			log.debug("Download torrent contents to: {}", downloadForm.getTorrentContentDownloadTo());

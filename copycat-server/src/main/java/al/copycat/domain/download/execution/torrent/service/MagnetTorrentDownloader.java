@@ -16,7 +16,7 @@ public class MagnetTorrentDownloader implements Downloader<MagnetTorrentDownload
 	@Override
 	public Path startDownload(MagnetTorrentDownloadForm downloadForm) {
 		try {
-			FileUtils.createDirectories(downloadForm.getTorrentContentDownloadTo());
+			FileUtils.createParentDirectories(downloadForm.getTorrentContentDownloadTo());
 
 			TorrentClient client = TorrentClient.fromMagnet(downloadForm);
 			client.startDownload();
