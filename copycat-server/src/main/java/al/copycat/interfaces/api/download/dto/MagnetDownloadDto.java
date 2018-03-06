@@ -7,6 +7,6 @@ import lombok.Setter;
 @Setter
 public class MagnetDownloadDto {
 
-	private String torrent;
+	private String magnet;
 
 }
