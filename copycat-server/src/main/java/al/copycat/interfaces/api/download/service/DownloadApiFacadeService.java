@@ -10,7 +10,6 @@ import al.copycat.domain.download.source.simple.model.MultipartFileSource;
 import al.copycat.domain.download.source.simple.model.UrlSource;
 import al.copycat.domain.download.source.torrent.model.MagnetTorrentSource;
 import al.copycat.domain.download.source.torrent.model.UrlTorrentSource;
-import al.copycat.domain.download.source.torrent.service.TorrentInspectDelegateService;
 import al.copycat.interfaces.api.download.dto.MagnetDownloadDto;
 import al.copycat.interfaces.api.download.dto.MultipartFileDownloadDto;
 import al.copycat.interfaces.api.download.dto.TorrentDownloadDto;
@@ -33,17 +32,10 @@ public class DownloadApiFacadeService {
 
 	private final DownloadProperties downloadProperties;
 
-	private final TorrentInspectDelegateService torrentInspectDelegateService;
-
 	@Autowired
-	public DownloadApiFacadeService(
-		DownloadFacadeService downloaderDelegateService
-		, DownloadProperties downloadProperties
-		, TorrentInspectDelegateService torrentInspectDelegateService) {
-
+	public DownloadApiFacadeService(DownloadFacadeService downloaderDelegateService, DownloadProperties downloadProperties) {
 		this.downloaderDelegateService = downloaderDelegateService;
 		this.downloadProperties = downloadProperties;
-		this.torrentInspectDelegateService = torrentInspectDelegateService;
 	}
 
 	public Mono<Void> download(MultipartFileDownloadDto downloadDto) {
@@ -69,7 +61,7 @@ public class DownloadApiFacadeService {
 
 	public Mono<Void> download(MagnetDownloadDto downloadDto) {
 		Mono<MagnetTorrentSource> sourceMono = Mono.fromCallable(
-			() -> MagnetTorrentSource.fromMagnet(downloadDto.getTorrent(), torrentInspectDelegateService));
+			() -> MagnetTorrentSource.fromMagnet(downloadDto.getTorrent()));
 		Mono<Path> downloadPathMono = Mono.fromCallable(() -> Paths.get(downloadProperties.getContentRoot()));
 		return Mono.defer(() -> Mono.zip(sourceMono, downloadPathMono))
 			.map(tuple -> MagnetTorrentDownloadForm.of(tuple.getT1(), tuple.getT2()))
@@ -79,7 +71,7 @@ public class DownloadApiFacadeService {
 
 	//FIXME: tuple(t1, t2) is implicit indicator, apply explicit indicator
 	public Mono<Void> download(TorrentDownloadDto downloadDto) {
-		return Mono.defer(() -> Mono.fromCallable(() -> UrlTorrentSource.fromUrl(downloadDto.getTorrent(), torrentInspectDelegateService)))
+		return Mono.defer(() -> Mono.fromCallable(() -> UrlTorrentSource.fromUrl(downloadDto.getTorrent())))
 			.flatMap(source -> Mono.just(source).zipWith(urlTorrentPathMono(source.getMetadata().getName())))
 			.map(tuple -> UrlTorrentDownloadForm.of(tuple.getT1(), tuple.getT2().getT1(), tuple.getT2().getT2()))
 			.map(downloaderDelegateService::download)
