@@ -24,7 +24,7 @@ import java.util.Optional;
 public class TorrentClient implements Closeable {
 
 	private BtClient client;
-	private int interval = 1000; // 1 sec
+	private int interval = 5 * 1000; // 5 secs
 	private String torrentPath;
 
 	private TorrentClient(BtClient client, String torrentPath) {
