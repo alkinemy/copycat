@@ -1,6 +1,8 @@
 package al.copycat.domain.download.common.exception;
 
-public class DownloadException extends RuntimeException {
+import al.copycat.domain.base.exception.CopycatException;
+
+public class DownloadException extends CopycatException {
 
 	public DownloadException(String message) {
 		super(message);

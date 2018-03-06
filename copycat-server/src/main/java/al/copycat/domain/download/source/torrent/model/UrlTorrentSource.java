@@ -1,7 +1,7 @@
 package al.copycat.domain.download.source.torrent.model;
 
 import al.copycat.domain.download.common.exception.DownloadException;
-import al.copycat.domain.download.source.torrent.service.TorrentInspector;
+import al.copycat.domain.download.source.torrent.service.TorrentInspectDelegateService;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,10 +18,9 @@ public class UrlTorrentSource implements TorrentSource<URL> {
 	private URL source;
 	private TorrentMetadata metadata;
 
-	public static UrlTorrentSource fromUrl(String source) {
+	public static UrlTorrentSource fromUrl(String source, TorrentInspectDelegateService inspector) {
 		try {
 			URL url = new URL(source);
-			TorrentInspector inspector = TorrentInspector.create();
 			TorrentMetadata metadata = inspector.getMetadata(url);
 			return new UrlTorrentSource(url, metadata);
 		} catch (MalformedURLException e) {

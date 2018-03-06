@@ -1,29 +1,9 @@
 package al.copycat.domain.download.source.torrent.service;
 
 import al.copycat.domain.download.source.torrent.model.TorrentMetadata;
-import bt.metainfo.MetadataService;
-import bt.metainfo.Torrent;
 
-import java.net.URL;
+public interface TorrentInspector<T> {
 
-public class TorrentInspector {
-
-	private MetadataService metadataService;
-
-	private TorrentInspector() {
-		this.metadataService = new MetadataService();
-	}
-
-	public static TorrentInspector create() {
-		return new TorrentInspector();
-	}
-
-	public TorrentMetadata getMetadata(URL url) {
-		Torrent torrent = metadataService.fromUrl(url);
-		return TorrentMetadata.builder()
-			.name(torrent.getName())
-			.size(torrent.getSize())
-			.build();
-	}
+	TorrentMetadata getMetadata(T t);
 
 }
