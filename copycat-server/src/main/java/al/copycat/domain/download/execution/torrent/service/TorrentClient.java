@@ -40,12 +40,12 @@ public class TorrentClient implements Closeable {
 			}
 		});
 		BtClient client = Bt.client()
-			.magnet(downloadForm.getFrom().getSource())
+			.magnet(downloadForm.getFrom().getSource().getUrl())
 			.storage(storage)
 			.autoLoadModules()
 			.module(dhtModule)
 			.build();
-		return new TorrentClient(client, downloadForm.getFrom().getSource());
+		return new TorrentClient(client, downloadForm.getFrom().getSource().getUrl());
 	}
 
 	public static TorrentClient fromFile(FileTorrentDownloadForm downloadForm) {
