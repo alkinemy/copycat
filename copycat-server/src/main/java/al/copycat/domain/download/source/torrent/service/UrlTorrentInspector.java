@@ -6,35 +6,33 @@ import bt.metainfo.MetadataService;
 import bt.metainfo.Torrent;
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.File;
-import java.nio.file.Files;
+import java.net.URL;
 
 @Slf4j
-public class FileTorrentInspector implements TorrentInspector<File> {
+public class UrlTorrentInspector implements TorrentInspector<URL> {
 
 	private final MetadataService metadataService;
 
-	private FileTorrentInspector() {
+	private UrlTorrentInspector() {
 		this.metadataService = new MetadataService();
 	}
 
-	public static FileTorrentInspector create() {
-		return new FileTorrentInspector();
+	public static UrlTorrentInspector create() {
+		return new UrlTorrentInspector();
 	}
 
 	@Override
-	public TorrentMetadata getMetadata(File file) {
+	public TorrentMetadata getMetadata(URL url) {
 		try {
-			byte[] fileBytes = Files.readAllBytes(file.toPath());
-			Torrent torrent = metadataService.fromByteArray(fileBytes);
+			Torrent torrent = metadataService.fromUrl(url);
 			return TorrentMetadata.builder()
+				.id(torrent.getTorrentId().toString())
 				.name(torrent.getName())
 				.size(torrent.getSize())
 				.build();
 		} catch (Exception e) {
-			log.error("Fail to inspect torrent file: {}", file.getAbsolutePath(), e);
-			throw new TorrentException("Fail to inspect torrent file: " + file.getAbsolutePath(), e);
+			log.error("Fail to inspect torrent url: {}", url, e);
+			throw new TorrentException("Fail to inspect torrent url: " + url, e);
 		}
 	}
-
 }

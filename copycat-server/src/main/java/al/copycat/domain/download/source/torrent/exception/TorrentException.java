@@ -1,6 +1,8 @@
 package al.copycat.domain.download.source.torrent.exception;
 
-public class TorrentException extends RuntimeException {
+import al.copycat.domain.base.exception.CopycatException;
+
+public class TorrentException extends CopycatException {
 
 	public TorrentException(String message) {
 		super(message);

@@ -10,10 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.nio.file.Path;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -32,14 +29,15 @@ public class DownloaderDelegateService {
 	public void initialize() {
 		String[] beanNames = applicationContext.getBeanNamesForType(Downloader.class);
 		Arrays.stream(beanNames).forEach(beanName -> {
-			Downloader downloader = applicationContext.getBean(beanName, Downloader.class);
+			Downloader<?> downloader = applicationContext.getBean(beanName, Downloader.class);
 			Class<?> downloadType = GenericTypeResolver.resolveTypeArgument(downloader.getClass(), Downloader.class);
 			log.info("Downloader bean(name: {}, type: {}) registered", beanName, downloadType);
 			downloaders.put(downloadType, downloader);
 		});
+		downloaders = Collections.unmodifiableMap(downloaders);
 	}
 
-	public Path startDownload(DownloadForm downloadForm) {
+	public  Path startDownload(DownloadForm downloadForm) {
 		Downloader downloader = Optional.ofNullable(downloaders.get(downloadForm.getClass()))
 			.orElseThrow(() -> new DownloadException("Unsupported download type: " + downloadForm.getClass()));
 		return downloader.startDownload(downloadForm);

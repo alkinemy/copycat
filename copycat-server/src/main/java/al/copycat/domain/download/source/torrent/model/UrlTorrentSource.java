@@ -2,6 +2,7 @@ package al.copycat.domain.download.source.torrent.model;
 
 import al.copycat.domain.download.common.exception.DownloadException;
 import al.copycat.domain.download.source.torrent.service.TorrentInspector;
+import al.copycat.domain.download.source.torrent.service.UrlTorrentInspector;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,13 +16,13 @@ import java.net.URL;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class UrlTorrentSource implements TorrentSource<URL> {
 
-	private URL source;
-	private TorrentMetadata metadata;
+	private final URL source;
+	private final TorrentMetadata metadata;
 
 	public static UrlTorrentSource fromUrl(String source) {
 		try {
 			URL url = new URL(source);
-			TorrentInspector inspector = TorrentInspector.create();
+			TorrentInspector<URL> inspector = UrlTorrentInspector.create();
 			TorrentMetadata metadata = inspector.getMetadata(url);
 			return new UrlTorrentSource(url, metadata);
 		} catch (MalformedURLException e) {

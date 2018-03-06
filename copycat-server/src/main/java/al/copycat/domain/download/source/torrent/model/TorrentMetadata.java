@@ -9,6 +9,7 @@ import lombok.ToString;
 @Builder
 public class TorrentMetadata {
 
+	private String id;
 	private String name;
 	private long size;
 
