@@ -42,11 +42,12 @@ public class MagnetTorrentSource implements TorrentSource<String> {
 			return new Inspector();
 		}
 
-		public TorrentMetadata getMetadata(String magnet) {
+		TorrentMetadata getMetadata(String magnet) {
 			try {
 				MagnetUri uri = parser.parse(magnet);
 				return TorrentMetadata.builder()
-					.name(uri.getDisplayName().orElse("NO_NAME_" + LocalDateTime.now().toString()))
+					.id(uri.getTorrentId().toString())
+					.name(uri.getDisplayName().orElse("MAGNET_NO_NAME_" + LocalDateTime.now().toString()))
 					.build();
 			} catch (Exception e) {
 				log.error("Fail to inspect magnet: {}", magnet, e);

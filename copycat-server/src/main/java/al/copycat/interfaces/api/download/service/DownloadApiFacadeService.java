@@ -60,8 +60,7 @@ public class DownloadApiFacadeService {
 	}
 
 	public Mono<Void> download(MagnetDownloadDto downloadDto) {
-		Mono<MagnetTorrentSource> sourceMono = Mono.fromCallable(
-			() -> MagnetTorrentSource.fromMagnet(downloadDto.getTorrent()));
+		Mono<MagnetTorrentSource> sourceMono = Mono.fromCallable(() -> MagnetTorrentSource.fromMagnet(downloadDto.getTorrent()));
 		Mono<Path> downloadPathMono = Mono.fromCallable(() -> Paths.get(downloadProperties.getContentRoot()));
 		return Mono.defer(() -> Mono.zip(sourceMono, downloadPathMono))
 			.map(tuple -> MagnetTorrentDownloadForm.of(tuple.getT1(), tuple.getT2()))

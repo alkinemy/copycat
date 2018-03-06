@@ -49,6 +49,7 @@ public class UrlTorrentSource implements TorrentSource<URL> {
 			try {
 				Torrent torrent = metadataService.fromUrl(url);
 				return TorrentMetadata.builder()
+					.id(torrent.getTorrentId().toString())
 					.name(torrent.getName())
 					.size(torrent.getSize())
 					.build();
