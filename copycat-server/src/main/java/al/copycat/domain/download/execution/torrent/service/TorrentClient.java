@@ -85,6 +85,7 @@ public class TorrentClient implements Closeable {
 
 	@Override
 	public void close() {
+		//FIXME: 빨리 닫히지 않으면 여러번 호출되는 에러가 있다....
 		log.info("Close torrent client: {}", torrentPath);
 		Optional.ofNullable(client)
 			.filter(BtClient::isStarted)
