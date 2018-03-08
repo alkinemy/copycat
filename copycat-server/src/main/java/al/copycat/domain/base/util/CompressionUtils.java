@@ -1,6 +1,5 @@
 package al.copycat.domain.base.util;
 
-import al.copycat.domain.base.exception.CopycatException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 
@@ -15,7 +14,7 @@ import java.util.zip.ZipInputStream;
 @Slf4j
 public abstract class CompressionUtils {
 
-	public static Path uncompress(File file, Path uncompressTo, Charset charset) {
+	public static Path uncompress(File file, Path uncompressTo, Charset charset) throws IOException {
 		ZipInputStream zipInputStream = null;
 		try {
 			Path destination = FileUtils.createDirectories(uncompressTo);
@@ -30,14 +29,14 @@ public abstract class CompressionUtils {
 				zipEntry = zipInputStream.getNextEntry();
 			}
 			return destination;
-		} catch (Exception e) {
+		} catch (IOException e) {
 			log.error("Fail to uncompress file: {}", file, e);
 			try {
 				FileUtils.forceDelete(uncompressTo);
-			} catch (Exception ignored) {
+			} catch (IOException ignored) {
 				log.error("Fail to delete failed uncompressed directory: {}", uncompressTo, ignored);
 			}
-			throw new CopycatException("Fail to uncompress file: " + file, e);
+			throw e;
 		} finally {
 			if (zipInputStream != null) {
 				try {
@@ -49,7 +48,7 @@ public abstract class CompressionUtils {
 		}
 	}
 
-	public static Path uncompress(File file, Path uncompressTo) {
+	public static Path uncompress(File file, Path uncompressTo) throws IOException {
 		return uncompress(file, uncompressTo, StandardCharsets.UTF_8);
 	}
 
