@@ -26,7 +26,7 @@ public abstract class FileUtils {
 		return createDirectories(path.getParent());
 	}
 
-	public static void deleteIfExists(Path path) {
+	public static void forceDelete(Path path) {
 		try {
 			org.apache.commons.io.FileUtils.forceDelete(path.toFile());
 		} catch (IOException e) {

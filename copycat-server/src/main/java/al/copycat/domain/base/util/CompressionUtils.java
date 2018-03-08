@@ -33,7 +33,7 @@ public abstract class CompressionUtils {
 		} catch (Exception e) {
 			log.error("Fail to uncompress file: {}", file, e);
 			try {
-				FileUtils.deleteIfExists(uncompressTo);
+				FileUtils.forceDelete(uncompressTo);
 			} catch (Exception ignored) {
 				log.error("Fail to delete failed uncompressed directory: {}", uncompressTo, ignored);
 			}
