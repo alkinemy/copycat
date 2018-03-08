@@ -9,24 +9,28 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.nio.charset.Charset;
 import java.nio.file.Path;
 
 @Slf4j
 @Service
 public class MultipartFileDownloader implements Downloader<MultipartFileDownloadForm> {
 
+	private static final Charset ZIP_CHARSET = Charset.forName("CP949");
+
 	@Override
 	public Path startDownload(MultipartFileDownloadForm downloadForm) {
 		try {
 			FileUtils.createParentDirectories(downloadForm.getDownloadTo());
 
-			File destination = downloadForm.getDownloadTo().toFile();
-			log.debug("Download file to: {}", destination);
-			downloadForm.getFrom().getSource().transferTo(destination);
+			File downloadTo = downloadForm.getDownloadTo().toFile();
+			log.debug("Download file to: {}", downloadTo);
+			downloadForm.getFrom().getSource().transferTo(downloadTo);
 
-			if (CompressionUtils.isCompressedFile(destination)) {
-				//FIXME 뭔가를 리턴하게 하는게 좋을듯
-				CompressionUtils.uncompress(destination);
+			if (CompressionUtils.isCompressed(downloadTo)) {
+				String uncompressDirectory = downloadTo.getName() + ".uncompressed";
+				Path uncompressTo = downloadTo.toPath().resolveSibling(uncompressDirectory);
+				return CompressionUtils.uncompress(downloadTo, uncompressTo, ZIP_CHARSET);
 			}
 			return downloadForm.getDownloadTo();
 		} catch (Exception e) {

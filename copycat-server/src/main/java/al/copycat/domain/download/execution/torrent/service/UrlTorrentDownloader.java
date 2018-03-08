@@ -45,8 +45,7 @@ public class UrlTorrentDownloader implements Downloader<UrlTorrentDownloadForm> 
 		UrlDownloadForm urlDownloadForm = Optional.of(downloadForm.getFrom().getSource())
 			.map(UrlSource::of)
 			.map(from -> UrlDownloadForm.of(from, downloadForm.getTorrentFileDownloadTo()))
-			.orElseThrow(() ->
-				new DownloadException("Fail to create url download form from url torrent form: " + downloadForm.getFrom().getSource()));
+			.orElseThrow(() -> new DownloadException("Fail to create UrlDownloadForm from url: " + downloadForm.getFrom().getSource()));
 		return urlDownloader.startDownload(urlDownloadForm);
 	}
 
@@ -55,7 +54,7 @@ public class UrlTorrentDownloader implements Downloader<UrlTorrentDownloadForm> 
 			.map(Path::toFile)
 			.map(torrentFile -> FileTorrentSource.of(torrentFile, downloadForm.getFrom().getMetadata()))
 			.map(source -> FileTorrentDownloadForm.of(source, downloadForm.getTorrentContentDownloadTo()))
-			.orElseThrow(() -> new DownloadException("Fail to create file torrent download form from file: " + torrentFilePath));
+			.orElseThrow(() -> new DownloadException("Fail to create FileTorrentDownloadForm from file: " + torrentFilePath));
 		return fileTorrentDownloader.startDownload(fileTorrentDownloadForm);
 	}
 

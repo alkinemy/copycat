@@ -26,4 +26,12 @@ public abstract class FileUtils {
 		return createDirectories(path.getParent());
 	}
 
+	public static void deleteIfExists(Path path) {
+		try {
+			org.apache.commons.io.FileUtils.forceDelete(path.toFile());
+		} catch (IOException e) {
+			throw new CopycatException("Fail to delete file: " + path, e);
+		}
+	}
+
 }

@@ -44,6 +44,7 @@ public class TorrentClient implements Closeable {
 			.storage(storage)
 			.autoLoadModules()
 			.module(dhtModule)
+			.stopWhenDownloaded()
 			.build();
 		return new TorrentClient(client, downloadForm.getFrom().getSource().getUrl());
 	}

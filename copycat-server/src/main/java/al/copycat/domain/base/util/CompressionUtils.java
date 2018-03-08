@@ -2,42 +2,62 @@ package al.copycat.domain.base.util;
 
 import al.copycat.domain.base.exception.CopycatException;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.compress.archivers.ArchiveException;
-import org.apache.commons.compress.archivers.ArchiveInputStream;
-import org.apache.commons.compress.archivers.ArchiveStreamFactory;
-import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
-import org.apache.commons.compress.utils.IOUtils;
+import org.apache.commons.io.IOUtils;
 
 import java.io.*;
-import java.nio.file.Files;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
+import java.util.zip.ZipInputStream;
 
 @Slf4j
 public abstract class CompressionUtils {
 
-	private static final String COMPRESSED_FILE_TYPE = "application/x-zip-compressed";
+	public static Path uncompress(File file, Path uncompressTo, Charset charset) {
+		ZipInputStream zipInputStream = null;
+		try {
+			Path destination = FileUtils.createDirectories(uncompressTo);
 
-	public static void uncompress(File file) throws IOException, ArchiveException {
-		try (InputStream inputStream = new FileInputStream(file);
-			ArchiveInputStream in = new ArchiveStreamFactory().createArchiveInputStream("zip", inputStream)) {
-
-			ZipArchiveEntry entry = (ZipArchiveEntry) in.getNextEntry();
-			//FIXME parent directory 이름 변경
-			try (OutputStream out = new FileOutputStream(new File("", entry.getName()))) {
-				IOUtils.copy(in, out);
+			zipInputStream = new ZipInputStream(new FileInputStream(file), charset);
+			ZipEntry zipEntry = zipInputStream.getNextEntry();
+			while (zipEntry != null) {
+				Path to = destination.resolve(zipEntry.getName());
+				try (OutputStream outputStream = new FileOutputStream(to.toFile())) {
+					IOUtils.copy(zipInputStream, outputStream);
+				}
+				zipEntry = zipInputStream.getNextEntry();
 			}
-
+			return destination;
+		} catch (Exception e) {
+			log.error("Fail to uncompress file: {}", file, e);
+			try {
+				FileUtils.deleteIfExists(uncompressTo);
+			} catch (Exception ignored) {
+				log.error("Fail to delete failed uncompressed directory: {}", uncompressTo, ignored);
+			}
+			throw new CopycatException("Fail to uncompress file: " + file, e);
+		} finally {
+			if (zipInputStream != null) {
+				try {
+					zipInputStream.closeEntry();
+					zipInputStream.close();
+				} catch (Exception ignored) {
+				}
+			}
 		}
 	}
 
-	public static boolean isCompressedFile(File file) {
-		try {
-			Path filePath = file.toPath();
-			String fileType = Files.probeContentType(filePath);
-			return COMPRESSED_FILE_TYPE.equals(fileType);
+	public static Path uncompress(File file, Path uncompressTo) {
+		return uncompress(file, uncompressTo, StandardCharsets.UTF_8);
+	}
+
+	public static boolean isCompressed(File file) {
+		try(ZipFile ignored = new ZipFile(file)) {
+			return true;
 		} catch (Exception exception) {
-			log.warn("Fail to check file type");
-			throw new CopycatException("Fail to check file type", exception);
+			return false;
 		}
 	}
 
