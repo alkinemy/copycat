@@ -3,12 +3,13 @@ ext {
 	spockVersion = '1.1-groovy-2.4'
 	springBootVersion = '2.0.0.RELEASE'
 	querydslVersion = '4.1.4'
+    junitVersion = '5.1.0'
 }
 
 subprojects {
 	apply plugin: 'java'
 	apply plugin: 'eclipse'
-	apply plugin: 'groovy'
+    apply plugin: 'groovy'
 	apply plugin: 'idea'
 
 	sourceCompatibility = 1.9
@@ -29,8 +30,14 @@ subprojects {
 	}
 
 	dependencies {
-		testCompile("junit:junit:4.12")
         testCompile("org.mockito:mockito-core:2.17.0")
+
+        testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
+        testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
 	}
+
+    test {
+        useJUnitPlatform()
+    }
 
 }
