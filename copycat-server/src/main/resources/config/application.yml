@@ -5,4 +5,4 @@ spring.jackson.serialization:
   write-dates-as-timestamps: false
 
 logging:
-  level.: ERROR
+  level.root: ERROR
