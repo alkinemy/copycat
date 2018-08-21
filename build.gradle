@@ -1,19 +1,22 @@
 ext {
-	lombokVersion = '1.16.20'
+	lombokVersion = '1.18.2'
+    slf4jVersion = '1.7.25'
+    logbackVersion = '1.2.3'
+	springBootVersion = '2.0.4.RELEASE'
+	querydslVersion = '4.2.1'
+
 	spockVersion = '1.1-groovy-2.4'
-	springBootVersion = '2.0.0.RELEASE'
-	querydslVersion = '4.1.4'
-    junitVersion = '5.1.0'
+    junitVersion = '5.2.0'
 }
 
 subprojects {
-	apply plugin: 'java'
+	apply plugin: 'java-library'
 	apply plugin: 'eclipse'
-    apply plugin: 'groovy'
+	apply plugin: 'groovy'
 	apply plugin: 'idea'
 
-	sourceCompatibility = 1.9
-	targetCompatibility = 1.9
+	sourceCompatibility = 1.8
+	targetCompatibility = 1.8
 
 	project.group = 'copycat'
 
@@ -30,10 +33,22 @@ subprojects {
 	}
 
 	dependencies {
-        testCompile("org.mockito:mockito-core:2.17.0")
-        testCompile('org.assertj:assertj-core:3.9.0')
+        compile("org.slf4j:slf4j-api:${slf4jVersion}") //included spring-boot-starter-web
+        compile("org.slf4j:jcl-over-slf4j:${slf4jVersion}")
+        compile("org.slf4j:log4j-over-slf4j:${slf4jVersion}")
+        compile("org.slf4j:jul-to-slf4j:${slf4jVersion}") //included spring-boot-starter-web
+        compile("ch.qos.logback:logback-core:${logbackVersion}") //included spring-boot-starter-web
+        compile("ch.qos.logback:logback-classic:${logbackVersion}") //included spring-boot-starter-web
+
+        compileOnly("org.projectlombok:lombok:${lombokVersion}")
+        annotationProcessor("org.projectlombok:lombok:${lombokVersion}")
+        testCompileOnly("org.projectlombok:lombok:${lombokVersion}")
+
+        testCompile("org.mockito:mockito-core:2.19.0")
+        testCompile("org.assertj:assertj-core:3.10.0")
 
         testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
+        testImplementation("org.junit.jupiter:junit-jupiter-params:${junitVersion}")
         testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
         testRuntimeOnly("org.junit.vintage:junit-vintage-engine:${junitVersion}")
 	}
