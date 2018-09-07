@@ -59,3 +59,4 @@ nbdist/
 
 generated/
 *.log
+*.gz

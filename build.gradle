@@ -15,8 +15,8 @@ subprojects {
 	apply plugin: 'groovy'
 	apply plugin: 'idea'
 
-	sourceCompatibility = 1.8
-	targetCompatibility = 1.8
+	sourceCompatibility = 1.10
+	targetCompatibility = 1.10
 
 	project.group = 'copycat'
 
