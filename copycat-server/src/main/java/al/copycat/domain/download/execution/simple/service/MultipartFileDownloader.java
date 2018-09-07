@@ -1,8 +1,9 @@
 package al.copycat.domain.download.execution.simple.service;
 
+import al.copycat.domain.base.exception.Exceptions;
 import al.copycat.domain.base.util.CompressionUtils;
 import al.copycat.domain.base.util.FileUtils;
-import al.copycat.domain.download.common.exception.DownloadException;
+import al.copycat.domain.download.common.exception.DownloadErrorCode;
 import al.copycat.domain.download.execution.common.service.Downloader;
 import al.copycat.domain.download.execution.simple.model.MultipartFileDownloadForm;
 import lombok.extern.slf4j.Slf4j;
@@ -35,7 +36,7 @@ public class MultipartFileDownloader implements Downloader<MultipartFileDownload
 			return downloadForm.getDownloadTo();
 		} catch (Exception e) {
 			log.error("Fail to start downloading multipart file: {}", downloadForm.getFrom().getSource().getOriginalFilename(), e);
-			throw new DownloadException("Fail to start downloading multipart file: " + downloadForm.getFrom().getSource().getOriginalFilename(), e);
+			throw Exceptions.newException(DownloadErrorCode.E500_DOWNLOAD_FAILED_SIMPLE_MULTIPART_FILE, e);
 		}
 	}
 

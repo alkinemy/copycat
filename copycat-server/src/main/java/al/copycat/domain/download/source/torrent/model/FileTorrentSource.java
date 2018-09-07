@@ -1,6 +1,7 @@
 package al.copycat.domain.download.source.torrent.model;
 
-import al.copycat.domain.download.common.exception.DownloadException;
+import al.copycat.domain.base.exception.Exceptions;
+import al.copycat.domain.download.common.exception.DownloadErrorCode;
 import al.copycat.domain.download.source.torrent.service.FileTorrentInspector;
 import al.copycat.domain.download.source.torrent.service.TorrentInspector;
 import lombok.AllArgsConstructor;
@@ -24,7 +25,7 @@ public class FileTorrentSource implements TorrentSource<File> {
 			return new FileTorrentSource(file, metadata);
 		} catch (Exception e) {
 			log.error("Invalid file: {}", file.getAbsolutePath(), e);
-			throw new DownloadException("Invalid file: " + file.getAbsolutePath(), e);
+			throw Exceptions.newException(DownloadErrorCode.E400_INVALID_SOURCE_FILE_TORRENT, e);
 		}
 	}
 

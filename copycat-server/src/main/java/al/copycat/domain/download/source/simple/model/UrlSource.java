@@ -1,6 +1,7 @@
 package al.copycat.domain.download.source.simple.model;
 
-import al.copycat.domain.download.common.exception.DownloadException;
+import al.copycat.domain.base.exception.Exceptions;
+import al.copycat.domain.download.common.exception.DownloadErrorCode;
 import al.copycat.domain.download.source.common.model.Source;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,7 +23,8 @@ public class UrlSource implements Source<URL> {
 			return new UrlSource(url);
 		} catch (MalformedURLException e) {
 			log.error("Invalid URL: {}", source, e);
-			throw new DownloadException("Invalid URL: " + source, e);
+			throw Exceptions.newException(DownloadErrorCode.E400_INVALID_SOURCE_SIMPLE_URL, e);
 		}
 	}
+
 }

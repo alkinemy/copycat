@@ -1,6 +1,7 @@
 package al.copycat.domain.download.source.torrent.service;
 
-import al.copycat.domain.download.source.torrent.exception.TorrentException;
+import al.copycat.domain.base.exception.Exceptions;
+import al.copycat.domain.download.common.exception.DownloadErrorCode;
 import al.copycat.domain.download.source.torrent.model.TorrentMetadata;
 import bt.metainfo.MetadataService;
 import bt.metainfo.Torrent;
@@ -32,7 +33,7 @@ public class UrlTorrentInspector implements TorrentInspector<URL> {
 				.build();
 		} catch (Exception e) {
 			log.error("Fail to inspect torrent url: {}", url, e);
-			throw new TorrentException("Fail to inspect torrent url: " + url, e);
+			throw Exceptions.newException(DownloadErrorCode.E500_INSPECT_FAILED_URL_TORRENT, e);
 		}
 	}
 }

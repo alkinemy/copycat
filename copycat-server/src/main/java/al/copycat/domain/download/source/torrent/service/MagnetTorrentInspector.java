@@ -1,6 +1,7 @@
 package al.copycat.domain.download.source.torrent.service;
 
-import al.copycat.domain.download.source.torrent.exception.TorrentException;
+import al.copycat.domain.base.exception.Exceptions;
+import al.copycat.domain.download.common.exception.DownloadErrorCode;
 import al.copycat.domain.download.source.torrent.model.Magnet;
 import al.copycat.domain.download.source.torrent.model.TorrentMetadata;
 import bt.magnet.MagnetUri;
@@ -32,7 +33,7 @@ public class MagnetTorrentInspector implements TorrentInspector<Magnet> {
 				.build();
 		} catch (Exception e) {
 			log.error("Fail to inspect magnet: {}", magnet, e);
-			throw new TorrentException("Fail to inspect magnet: " + magnet, e);
+			throw Exceptions.newException(DownloadErrorCode.E500_INSPECT_FAILED_MAGNET_TORRENT, e);
 		}
 	}
 

@@ -1,6 +1,7 @@
 package al.copycat.domain.download.source.torrent.model;
 
-import al.copycat.domain.download.common.exception.DownloadException;
+import al.copycat.domain.base.exception.Exceptions;
+import al.copycat.domain.download.common.exception.DownloadErrorCode;
 import al.copycat.domain.download.source.torrent.service.MagnetTorrentInspector;
 import al.copycat.domain.download.source.torrent.service.TorrentInspector;
 import lombok.AccessLevel;
@@ -24,7 +25,7 @@ public class MagnetTorrentSource implements TorrentSource<Magnet> {
 			return new MagnetTorrentSource(magnet, metadata);
 		} catch (Exception e) {
 			log.error("Invalid magnet: {}", source, e);
-			throw new DownloadException("Invalid magnet: " + source, e);
+			throw Exceptions.newException(DownloadErrorCode.E400_INVALID_SOURCE_MAGNET_TORRENT, e);
 		}
 	}
 

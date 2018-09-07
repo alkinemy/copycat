@@ -1,8 +1,9 @@
 package al.copycat.domain.download.execution.torrent.service;
 
+import al.copycat.domain.base.exception.Exceptions;
+import al.copycat.domain.download.common.exception.DownloadErrorCode;
 import al.copycat.domain.download.execution.torrent.model.FileTorrentDownloadForm;
 import al.copycat.domain.download.execution.torrent.model.MagnetTorrentDownloadForm;
-import al.copycat.domain.download.source.torrent.exception.TorrentException;
 import bt.Bt;
 import bt.data.Storage;
 import bt.data.file.FileSystemStorage;
@@ -68,7 +69,7 @@ public class TorrentClient implements Closeable {
 		} catch (MalformedURLException e) {
 			String torrentFilePath = downloadForm.getFrom().getSource().getAbsolutePath();
 			log.error("Fail to build torrent client: invalid file, {}", torrentFilePath, e);
-			throw new TorrentException("Fail to build torrent client: invalid file url", e);
+			throw Exceptions.newException(DownloadErrorCode.E500_TORRENT_CLIENT_START_FAILED, e);
 		}
 	}
 

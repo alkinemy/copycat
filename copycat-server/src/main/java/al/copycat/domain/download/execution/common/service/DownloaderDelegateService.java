@@ -1,6 +1,7 @@
 package al.copycat.domain.download.execution.common.service;
 
-import al.copycat.domain.download.common.exception.DownloadException;
+import al.copycat.domain.base.exception.Exceptions;
+import al.copycat.domain.download.common.exception.DownloadErrorCode;
 import al.copycat.domain.download.execution.common.model.DownloadForm;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,9 +38,12 @@ public class DownloaderDelegateService {
 		downloaders = Collections.unmodifiableMap(downloaders);
 	}
 
-	public  Path startDownload(DownloadForm downloadForm) {
+	public Path startDownload(DownloadForm downloadForm) {
 		Downloader downloader = Optional.ofNullable(downloaders.get(downloadForm.getClass()))
-			.orElseThrow(() -> new DownloadException("Unsupported download type: " + downloadForm.getClass()));
+			.orElseThrow(() -> Exceptions.newException(
+				"Unsupported download type: " + downloadForm.getClass(),
+				DownloadErrorCode.E400_UNSUPPORTED_DOWNLOAD_TYPE)
+			);
 		return downloader.startDownload(downloadForm);
 	}
 

@@ -1,23 +1,21 @@
 package al.copycat.domain.download.source.torrent.exception;
 
 import al.copycat.domain.base.exception.CopycatException;
+import al.copycat.domain.base.exception.ErrorCode;
+import al.copycat.domain.download.common.exception.DownloadException;
 
-public class TorrentException extends CopycatException {
+public class TorrentException extends DownloadException {
 
-	public TorrentException(String message) {
-		super(message);
+	public TorrentException(String message, ErrorCode errorCode) {
+		super(message, errorCode);
 	}
 
-	public TorrentException(String message, Throwable cause) {
-		super(message, cause);
+	public TorrentException(String message, ErrorCode errorCode, Object[] args) {
+		super(message, errorCode, args);
 	}
 
-	public TorrentException(Throwable cause) {
-		super(cause);
-	}
-
-	public TorrentException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-		super(message, cause, enableSuppression, writableStackTrace);
+	public TorrentException(String message, ErrorCode errorCode, Throwable t, Object[] args) {
+		super(message, errorCode, t, args);
 	}
 
 }

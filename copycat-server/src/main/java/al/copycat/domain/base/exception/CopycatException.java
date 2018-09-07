@@ -2,20 +2,23 @@ package al.copycat.domain.base.exception;
 
 public class CopycatException extends RuntimeException {
 
-	public CopycatException(String message) {
+	private ErrorCode errorCode;
+	private Object[] args;
+
+	public CopycatException(String message, ErrorCode errorCode) {
+		this(message, errorCode, null);
+	}
+
+	public CopycatException(String message, ErrorCode errorCode, Object[] args) {
 		super(message);
+		this.errorCode = errorCode;
+		this.args = args;
 	}
 
-	public CopycatException(String message, Throwable cause) {
-		super(message, cause);
-	}
-
-	public CopycatException(Throwable cause) {
-		super(cause);
-	}
-
-	public CopycatException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-		super(message, cause, enableSuppression, writableStackTrace);
+	public CopycatException(String message, ErrorCode errorCode, Throwable t, Object[] args) {
+		super(message, t);
+		this.errorCode = errorCode;
+		this.args = args;
 	}
 
 }
