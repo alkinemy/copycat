@@ -52,8 +52,8 @@ subprojects {
         testRuntimeOnly("org.junit.vintage:junit-vintage-engine:${junitVersion}")
 	}
 
-//    test {
-//        useJUnitPlatform()
-//    }
+    test {
+        useJUnitPlatform()
+    }
 
 }
