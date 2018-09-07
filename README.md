@@ -4,8 +4,8 @@
 - Display video list and play video with subtitle into frontend web
 
 ## Develop Environment
-- Language: Java 8 (change to java 9 soon)
-- Framework: Spring boot 1.5 (change to version 2 soon)
+- Language: Java 10
+- Framework: Spring boot 2
 - DB: MySQL
 
 ## Run(develop)
