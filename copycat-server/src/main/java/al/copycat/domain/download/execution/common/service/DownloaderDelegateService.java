@@ -3,6 +3,7 @@ package al.copycat.domain.download.execution.common.service;
 import al.copycat.domain.base.exception.Exceptions;
 import al.copycat.domain.download.common.exception.DownloadErrorCode;
 import al.copycat.domain.download.execution.common.model.DownloadForm;
+import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -28,6 +29,7 @@ public class DownloaderDelegateService {
 
 	@PostConstruct
 	public void initialize() {
+		Map<Class, Downloader> downloaders = Maps.newHashMap();
 		String[] beanNames = applicationContext.getBeanNamesForType(Downloader.class);
 		Arrays.stream(beanNames).forEach(beanName -> {
 			Downloader<?> downloader = applicationContext.getBean(beanName, Downloader.class);
@@ -35,7 +37,7 @@ public class DownloaderDelegateService {
 			log.info("Downloader bean(name: {}, type: {}) registered", beanName, downloadType);
 			downloaders.put(downloadType, downloader);
 		});
-		downloaders = Collections.unmodifiableMap(downloaders);
+		this.downloaders = Collections.unmodifiableMap(downloaders);
 	}
 
 	public Path startDownload(DownloadForm downloadForm) {

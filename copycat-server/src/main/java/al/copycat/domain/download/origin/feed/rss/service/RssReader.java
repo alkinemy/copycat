@@ -1,6 +1,7 @@
 package al.copycat.domain.download.origin.feed.rss.service;
 
-import al.copycat.domain.download.origin.common.exception.OriginException;
+import al.copycat.domain.base.exception.Exceptions;
+import al.copycat.domain.download.common.exception.DownloadErrorCode;
 import al.copycat.domain.download.origin.feed.common.service.FeedReader;
 import al.copycat.domain.download.origin.feed.rss.model.Rss;
 import al.copycat.domain.download.origin.feed.rss.model.RssEntry;
@@ -43,7 +44,7 @@ public class RssReader implements FeedReader<Rss, RssEntry> {
 				.collect(Collectors.toList());
 		} catch (Exception e) {
 			log.error("Fail to read feed", e);
-			throw new OriginException("Fail to read feed", e);
+			throw Exceptions.newException(DownloadErrorCode.E500_FEED_READING_FAILED, e);
 		}
 	}
 

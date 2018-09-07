@@ -1,21 +1,20 @@
 package al.copycat.domain.download.origin.common.exception;
 
-public class OriginException extends RuntimeException {
+import al.copycat.domain.base.exception.ErrorCode;
+import al.copycat.domain.download.common.exception.DownloadException;
 
-	public OriginException(String message) {
-		super(message);
+public class OriginException extends DownloadException {
+
+	public OriginException(String message, ErrorCode errorCode) {
+		super(message, errorCode);
 	}
 
-	public OriginException(String message, Throwable cause) {
-		super(message, cause);
+	public OriginException(String message, ErrorCode errorCode, Object[] args) {
+		super(message, errorCode, args);
 	}
 
-	public OriginException(Throwable cause) {
-		super(cause);
-	}
-
-	public OriginException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-		super(message, cause, enableSuppression, writableStackTrace);
+	public OriginException(String message, ErrorCode errorCode, Throwable t, Object[] args) {
+		super(message, errorCode, t, args);
 	}
 
 }

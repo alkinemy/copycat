@@ -1,8 +1,10 @@
 package al.copycat.domain.download.origin.common.service;
 
-import al.copycat.domain.download.origin.common.exception.OriginException;
+import al.copycat.domain.base.exception.Exceptions;
+import al.copycat.domain.download.common.exception.DownloadErrorCode;
 import al.copycat.domain.download.origin.common.model.Origin;
 import al.copycat.domain.download.origin.common.model.OriginEntry;
+import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -16,7 +18,7 @@ import java.util.*;
 @Service
 public class OriginReaderDelegateService {
 
-	private Map<Class, OriginReader> readers = new HashMap<>();
+	private Map<Class, OriginReader<? extends Origin, ? extends OriginEntry>> readers = new HashMap<>();
 
 	private final ApplicationContext applicationContext;
 
@@ -26,7 +28,9 @@ public class OriginReaderDelegateService {
 	}
 
 	@PostConstruct
+	@SuppressWarnings("unchecked")
 	public void initialize() {
+		Map<Class, OriginReader<? extends Origin, ? extends OriginEntry>> readers = Maps.newHashMap();
 		String[] beanNames = applicationContext.getBeanNamesForType(OriginReader.class);
 		Arrays.stream(beanNames).forEach(beanName -> {
 			OriginReader originReader = applicationContext.getBean(beanName, OriginReader.class);
@@ -35,12 +39,21 @@ public class OriginReaderDelegateService {
 			log.info("OriginReader bean(name: {}, type: {}) registered", beanName, originType);
 			readers.put(originType, originReader);
 		});
+		this.readers = Collections.unmodifiableMap(readers);
 	}
 
-	public List<OriginEntry> read(Origin origin) {
-		OriginReader reader = Optional.ofNullable(readers.get(origin.getClass()))
-			.orElseThrow(() -> new OriginException("Unsupported origin type: " + origin.getClass()));
+	public <T extends Origin, S extends OriginEntry> List<S> read(T origin) {
+		OriginReader<T, S> reader = findOriginReader(origin);
 		return reader.read(origin);
+	}
+
+	@SuppressWarnings("unchecked")
+	private <T extends Origin, S extends OriginEntry> OriginReader<T, S> findOriginReader(T origin) {
+		return (OriginReader<T, S>) Optional.ofNullable(readers.get(origin.getClass()))
+				.orElseThrow(() -> Exceptions.newException(
+					"Unsupported origin type: " + origin.getClass(),
+					DownloadErrorCode.E400_UNSUPPORTED_ORIGIN_TYPE)
+				);
 	}
 
 }

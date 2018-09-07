@@ -1,6 +1,7 @@
 package al.copycat.domain.download.common.exception;
 
 import al.copycat.domain.base.exception.ErrorCode;
+import al.copycat.domain.download.origin.common.exception.OriginException;
 import al.copycat.domain.download.source.torrent.exception.TorrentException;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,9 @@ public enum DownloadErrorCode implements ErrorCode {
 	E500_INSPECT_FAILED_URL_TORRENT(TorrentException.class),
 
 	E500_TORRENT_CLIENT_START_FAILED,
+
+	E400_UNSUPPORTED_ORIGIN_TYPE(OriginException.class),
+	E500_FEED_READING_FAILED(OriginException.class),
 	;
 
 	@Getter
